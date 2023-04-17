@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@babel/core": "^7.17.10",
+    "@f0rce/lit-ace": "1.7.1",
     "@polymer/iron-a11y-announcer": "3.0.2",
     "@polymer/iron-a11y-keys-behavior": "3.0.1",
     "@polymer/iron-fit-behavior": "3.0.2",
@@ -95,6 +96,7 @@
   "name": "no-name",
   "vaadin": {
     "dependencies": {
+      "@f0rce/lit-ace": "1.7.1",
       "@polymer/iron-a11y-announcer": "3.0.2",
       "@polymer/iron-a11y-keys-behavior": "3.0.1",
       "@polymer/iron-fit-behavior": "3.0.2",
@@ -184,6 +186,6 @@
       "webpack-dev-server": "3.11.0",
       "webpack-merge": "4.2.2"
     },
-    "hash": "2784c2a328098a3c795c5aee53dbe9e247e48c48941a267ed844c6ee9827d0a9"
+    "hash": "a24c800a932ff6dce38e4af4c637cad696877ffc7e4c6f29f0ae5b3a74abc65a"
   }
 }
