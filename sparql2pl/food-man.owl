@@ -1,0 +1,446 @@
+Prefix: : <http://www.semanticweb.org/food#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <http://www.semanticweb.org/food>
+
+
+Datatype: xsd:integer
+
+    
+ObjectProperty: cooked
+
+    Domain: 
+        food
+    
+    Range: 
+        procedure
+    
+    
+ObjectProperty: dish
+
+    Domain: 
+        menu
+    
+    Range: 
+        food
+    
+    
+ObjectProperty: made_from
+
+    Domain: 
+        food
+    
+    Range: 
+        food,
+        ingredient
+    
+    
+ObjectProperty: season
+
+    Domain: 
+        food
+    
+    Range: 
+        condiment
+    
+    
+DataProperty: price
+
+    
+DataProperty: time
+
+    Domain: 
+        food
+    
+    Range: 
+        xsd:integer
+    
+    
+Class: condiment
+
+    
+Class: food
+
+    
+Class: ingredient
+
+    
+Class: menu
+
+    
+Class: procedure
+
+    
+Individual: bake
+
+    Types: 
+        procedure
+    
+    
+Individual: beef
+
+    Types: 
+        ingredient
+    
+    
+Individual: bread
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  bake,
+     made_from  flour,
+     made_from  water,
+     season  salt,
+     time  120
+    
+    
+Individual: burger
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  grill,
+     made_from  beef,
+     made_from  bread,
+     made_from  cheese,
+     made_from  oil,
+     made_from  tomato,
+     season  salt,
+     time  20
+    
+    
+Individual: burger_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  burger,
+     dish  cake,
+     dish  salad,
+     price  100
+    
+    
+Individual: butter
+
+    Types: 
+        ingredient
+    
+    
+Individual: cake
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  bake,
+     made_from  butter,
+     made_from  egg,
+     made_from  flour,
+     made_from  fruit,
+     made_from  milk,
+     season  sugar,
+     time  120
+    
+    
+Individual: cheese
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  raw,
+     made_from  milk,
+     season  salt,
+     time  60
+    
+    
+Individual: chicken
+
+    Types: 
+        ingredient
+    
+    
+Individual: chicken_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  roasted_chicken,
+     dish  soup,
+     price  200
+    
+    
+Individual: egg
+
+    Types: 
+        ingredient
+    
+    
+Individual: flour
+
+    Types: 
+        ingredient
+    
+    
+Individual: fruit
+
+    Types: 
+        ingredient
+    
+    
+Individual: garlic
+
+    Types: 
+        ingredient
+    
+    
+Individual: grill
+
+    Types: 
+        procedure
+    
+    
+Individual: ham
+
+    Types: 
+        ingredient
+    
+    
+Individual: juice
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  raw,
+     made_from  fruit,
+     season  sugar,
+     time  10
+    
+    
+Individual: lettuce
+
+    Types: 
+        ingredient
+    
+    
+Individual: milk
+
+    Types: 
+        ingredient
+    
+    
+Individual: oil
+
+    Types: 
+        ingredient
+    
+    
+Individual: onion
+
+    Types: 
+        ingredient
+    
+    
+Individual: oregano
+
+    Types: 
+        condiment
+    
+    
+Individual: pepper
+
+    Types: 
+        condiment
+    
+    
+Individual: pizza
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  bake,
+     made_from  bread,
+     made_from  cheese,
+     made_from  ham,
+     made_from  onion,
+     made_from  tomato,
+     season  oregano,
+     time  45
+    
+    
+Individual: pizza_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  pizza,
+     price  80
+    
+    
+Individual: pumpkin
+
+    Types: 
+        ingredient
+    
+    
+Individual: raw
+
+    Types: 
+        procedure
+    
+    
+Individual: roast
+
+    Types: 
+        procedure
+    
+    
+Individual: roasted_chicken
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  roast,
+     made_from  butter,
+     made_from  chicken,
+     made_from  garlic,
+     season  salt,
+     time  60
+    
+    
+Individual: salad
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  raw,
+     made_from  lettuce,
+     made_from  oil,
+     made_from  onion,
+     made_from  tomato,
+     season  salt,
+     time  15
+    
+    
+Individual: salt
+
+    Types: 
+        condiment
+    
+    
+Individual: sandwich
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  grill,
+     made_from  bread,
+     made_from  butter,
+     made_from  cheese,
+     made_from  ham,
+     time  15
+    
+    
+Individual: sandwich_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  juice,
+     dish  sandwich,
+     price  50
+    
+    
+Individual: soup
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  stew,
+     made_from  garlic,
+     made_from  onion,
+     made_from  pumpkin,
+     made_from  water,
+     season  pepper,
+     season  salt,
+     time  35
+    
+    
+Individual: soup_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  cake,
+     dish  juice,
+     dish  soup,
+     price  30
+    
+    
+Individual: stew
+
+    Types: 
+        procedure
+    
+    
+Individual: sugar
+
+    Types: 
+        condiment
+    
+    
+Individual: tomato
+
+    Types: 
+        ingredient
+    
+    
+Individual: vegan_menu
+
+    Types: 
+        menu
+    
+    Facts:  
+     dish  juice,
+     dish  salad,
+     dish  soup,
+     price  200
+    
+    
+Individual: water
+
+    Types: 
+        ingredient
+    
+    
+Individual: wine
+
+    Types: 
+        food
+    
+    Facts:  
+     cooked  raw,
+     made_from  fruit,
+     time  200
+    
+    

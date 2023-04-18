@@ -151,23 +151,35 @@ public class pSPARQL {
 			head_goal = head_goal.substring(0, head_goal.length() - 1);
 			head_goal = head_goal + ")";
 
-			rules.get(current).add("goal" + head_goal);
-			String call_goal = head;
 			if (query.hasOrderBy()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				String orderby = orderby(query);
 				call_goal = "order_by(" + orderby + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.hasLimit()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "limit(" + query.getLimit() + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.isDistinct()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "distinct(" + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
-			rules.get(current).add(call_goal);
-			current = next;
-			next++;
-			rules.add(current, new ArrayList());
-			//
+			
 
 			rules.get(current).add(head);
 
@@ -240,22 +252,36 @@ public class pSPARQL {
 			head_goal = head_goal.substring(0, head_goal.length() - 1);
 			head_goal = head_goal + ")";
 
-			rules.get(current).add("goal" + head_goal);
-			String call_goal = head;
+			
 			if (query.hasOrderBy()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				String orderby = orderby(query);
 				call_goal = "order_by(" + orderby + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.hasLimit()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "limit(" + query.getLimit() + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.isDistinct()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "distinct(" + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
-			rules.get(current).add(call_goal);
-			current = next;
-			next++;
-			rules.add(current, new ArrayList());
+			
 			//
 
 			rules.get(current).add(head);
@@ -1214,23 +1240,35 @@ public class pSPARQL {
 			head_goal = head_goal.substring(0, head_goal.length() - 1);
 			head_goal = head_goal + ")";
 
-			rules.get(current).add("goal" + head_goal);
-			String call_goal = head;
 			if (query.hasOrderBy()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				String orderby = orderby(query);
 				call_goal = "order_by(" + orderby + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.hasLimit()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "limit(" + query.getLimit() + "," + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
 			if (query.isDistinct()) {
+				rules.get(current).add("goal" + head_goal);
+				String call_goal = head;
 				call_goal = "distinct(" + call_goal + ")";
+				rules.get(current).add(call_goal);
+				current = next;
+				next++;
+				rules.add(current, new ArrayList());
 			}
-			rules.get(current).add(call_goal);
-			current = next;
-			next++;
-			rules.add(current, new ArrayList());
-			//
+			
 
 			rules.get(tmp).add(head);
 
@@ -1705,161 +1743,168 @@ public class pSPARQL {
 
 		String prog1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" + "PREFIX f: <http://www.fuzzy.org/>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" + "SELECT ?Ind WHERE {"
 				+ "?Ind rdf:type sn:User " + "} ";
 
 		String prog2 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind  {"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind  {"
 				+ "?Ind rdf:type sn:User ;  sn:age 51  } ";
 
 		String prog3 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?X ?Z  WHERE { ?X rdf:type sn:User . ?X ?Y ?Z }";
 
 		String prog4 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?user WHERE {" + "?user rdf:type sn:User }";
 
 		String prog5 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?Ind WHERE  {" + "?Ind rdf:type sn:User .  ?Ind sn:age ?Age  . FILTER(?Age > 30) } ";
 
 		String prog6 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?NUSER1 ?NUSER2 WHERE {\n" + "?USER1 sn:name ?NUSER1 . ?USER2 sn:name ?NUSER2 . \n"
 				+ "?USER1 sn:age ?AU1 . ?USER2 sn:age ?AU2 . \n " + "FILTER(?AU1 > 40 ).\n" + "FILTER (?AU2 > 50) }\n";
 
+		 
 		String prog7 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" + "FILTER (?AGE > 25) .\n"
-				+ "FILTER EXISTS {SELECT ?USER2 WHERE {\n" + "?USER2 sn:age ?AGE2 .\n" + "}}}\n";
+				+ "FILTER EXISTS {SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" + "}}}\n";
 
 		String prog8 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?USER ?EVENT WHERE {\n" + "?USER rdf:type sn:User .\n" + "?USER sn:age ?AGE .\n"
 				+ "FILTER (?AGE > 40) .\n" + "?USER sn:attends_to ?EVENT" + "}\n";
 
 		String prog9 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?y WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?y WHERE "
 				+ "{ ?Ind rdf:type sn:User ." + "BIND(?Ind as ?y)} ";
 
+		 
 		String prog10 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind sn:attends_to ?y .  { SELECT ?y1 WHERE {?y1 rdf:type sn:Event  "
 				+ ". { SELECT ?y2 WHERE {?y2 rdf:type sn:Event   .  { SELECT ?y3 WHERE {?y3 rdf:type sn:Event }}}} "
 				+ "} }}";
 
+		 
 		String prog11 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" + "PREFIX f: <http://www.fuzzy.org/>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" + "SELECT ?Ind ?age ?event WHERE "
 				+ "{  ?Ind sn:age ?age ." + "OPTIONAL { SELECT ?Ind ?event WHERE { ?Ind sn:attends_to ?event "
 				+ "OPTIONAL {?Ind rdf:type sn:User} } } " + "} ";
 
-		// NOT SUPPORTED
+		// NO SOPORTADA
 		String prog12 = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ "PREFIX f: <http://www.fuzzy.org/>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" + "SELECT ?name "
 				+ "FROM NAMED   <http://www.semanticweb.org/ontologies/2011/7/miscojones.owl#> "
 				+ "WHERE   { ?Ind sn:name ?name }" + "ORDER BY ?Ind";
 
+		 
 		String prog13 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" + "FILTER (?AGE > 25) .\n"
 				+ "FILTER NOT EXISTS {SELECT ?USER WHERE {\n" + "?USER sn:attends_to ?Event \n" + "}\n" + "}}\n";
 
 		String prog14 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User ."
 				+ "OPTIONAL { ?Ind2 rdf:type sn:User . OPTIONAL {?Ind3 rdf:type sn:User } } }";
 
 		String prog15 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?y1 ?y2 ?y3 WHERE { " + " { ?y1 rdf:type sn:Event }  " + "UNION"
 				+ "{ {?y2 rdf:type sn:Event } UNION { ?y3 rdf:type sn:Event } } }";
 
-		// NOT SUPPORTED
+		// NO SOPORTADA
 		String prog16 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?x WHERE "
-				+ "{ ?x sn:age ?y ." + "VALUES ?y {47} }";
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?x WHERE "
+				+ "{ ?x sn:age ?y ." + "VALUES ?y {51} }";
 
 		String prog17 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User ." + "  { ?Ind sn:attends_to ?event2 }  " + "} ";
 
 		String prog18 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User . MINUS { ?Ind sn:attends_to ?Event } }";
 
 		String prog19 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User . MINUS { ?Ind sn:attends_to ?Event } }";
 
 		String prog20 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>" + "SELECT ?Ind WHERE "
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" + "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User . FILTER (?age > 25) }";
 
-		// EJEMPLOS CON VARIABLES EXTRA Y FUNCIONES -- PENDING!!
+		// EXTRA
 
 		String prog21a = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?user2 ?age WHERE {?user2 sn:age ?age2 . " + "FILTER(?age2 > ?age )} ";
 
+		
 		String prog21 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?user ?user2 WHERE { ?user sn:age ?age  {SELECT ?user2 ?age WHERE {?user2 sn:age ?age2 . "
 				+ "FILTER(?age2 > ?age )} }  }";
 
+		//MIRAR FUNCIONES
 		String prog22 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT (concat(?name,'hola') as ?nombre) WHERE {?user rdf:type sn:User . ?user sn:name ?name } ";
 
 		String prog23 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?Ind WHERE  {"
 				+ "?Ind rdf:type sn:User .   ?Ind sn:age ?Age . FILTER(?Age > 30 || ?Age < 80)     } ";
 
+		
 		String prog24 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?Ind ?Ind2 WHERE { " + " { ?Ind rdf:type sn:Event }  " + "UNION"
 				+ "{SELECT ?Ind2 WHERE {?Ind2 rdf:type sn:Event } } }";
-
+        
 		String prog25 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" + "FILTER (?AGE > 25) .\n"
 				+ "FILTER NOT EXISTS {SELECT ?AGE WHERE {\n" + "?USER2 sn:age ?AGE2 .\n" + "FILTER (?AGE < ?AGE2 ) }\n"
 				+ "}}\n";
@@ -1867,57 +1912,63 @@ public class pSPARQL {
 		String prog26 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?NUSER1 ?NUSER2 WHERE {\n" + "?USER1 sn:name ?NUSER1 . ?USER2 sn:name ?NUSER2 . \n"
 				+ "?USER1 sn:age ?AU1 . ?USER2 sn:age ?AU2 . \n " + "FILTER(?AU1 > 40 && ?AU2 > 50) }\n";
 
+		
 		String prog27 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
 				+ "SELECT ?user ?user2 ?age2 WHERE {"
-				+ "?user sn:age ?age2 . {SELECT ?user2 ?age2  WHERE {?user2 sn:age ?age2" + "}} . FILTER(?age2=52)} ";
+				+ "?user sn:age ?age2 . {SELECT ?user2 ?age2  WHERE {?user2 sn:age ?age2" + "}} . FILTER(?age2=51)} ";
 
+		 
 		String prog28 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" + "FILTER (?AGE > 50) .\n"
 				+ "FILTER EXISTS {SELECT ?USER ?AGE  WHERE {\n" + "?USER2 sn:age ?AGE2 . \n"
 				+ " FILTER (?AGE2 < ?AGE) }\n" + "}}\n";
 
 		String prog29 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\r\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\r\n"
 				+ "SELECT ?Ind ?age ?event WHERE\r\n " + "{?Ind sn:age ?age .\r\n"
 				+ "OPTIONAL { ?Ind sn:attends_to ?event }" + "MINUS {?Ind sn:age ?age . FILTER(?age < 50)}  } ";
 
+		 
 		String prog30 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?user (count(*) AS ?areg)  \r\n" + "WHERE {\r\n" + "  ?conf sn:added_by ?user .\r\n"
-				+ "  ?conf sn:registration ?reg .\r\n" + "}\r\n" + "GROUP BY ?user \r\n";
+				+ " \r\n" + "}\r\n" + "GROUP BY ?user \r\n";
 
+		//MIRAR
 		String prog31 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
-				+ "  ?conf sn:added_by ?user .\r\n" + "  ?conf sn:registration ?reg .\r\n" + "}\r\n"
+				+ "  ?conf sn:added_by ?user .\r\n"  + "}\r\n"
 				+ "GROUP BY ?user \r\n";
 
+		//MIRAR
 		String prog32 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
-				+ "  ?conf sn:added_by ?user .\r\n" + "  ?conf sn:registration ?reg .\r\n" + "}\r\n"
+				+ "  ?conf sn:added_by ?user .\r\n" + "   \r\n" + "}\r\n"
 				+ "GROUP BY ?user \r\n" + "HAVING (SUM(?reg) > 2000)";
 
+		//MIRAR
 		String prog33 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/ontologies/2011/7/socialnetwork.owl#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
 				+ "  ?conf sn:added_by ?user .\r\n" + " { SELECT ?conf ?reg WHERE { ?conf sn:registration ?reg }} .\r\n"
 				+ "}\r\n" + "GROUP BY ?user \r\n" + "HAVING (min(?reg) > 400)";
@@ -1945,6 +1996,7 @@ public class pSPARQL {
 				+ "WHERE { ?u fd:made_from ?m . ?u fd:time ?t . FILTER(?t<60) . FILTER(?t>0) }\r\n" + "GROUP BY ?u}\r\n"
 				+ "FILTER(?l > 3) .\r\n" + "}";
 
+		//MIRAR
 		String db4 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
@@ -1979,6 +2031,7 @@ public class pSPARQL {
 				+ "?u rdf:type fd:food .\r\n" + "?u fd:cooked fd:raw .\r\n" + "?u fd:time ?t .\r\n"
 				+ "MINUS {?u fd:made_from fd:milk}\r\n" + "FILTER(?t >= 60)\r\n" + "}";
 
+		 
 		String db8 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
@@ -1997,25 +2050,14 @@ public class pSPARQL {
 				+ "{?m fd:cooked fd:raw }\r\n" + "UNION {\r\n" + "{?m fd:cooked fd:roast }\r\n" + "UNION\r\n"
 				+ "{?m fd:cooked fd:bake } } }";
 
-		String basicA = "PREFIX movie: <http://www.movies.org#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?Rank \r\n" + "WHERE {\n"
-				+ "           ?Movie movie:name ?Name . \r\n"
-				+ "           ?Movie movie:leading_role (?Actor ?l) . \r\n"
-				// + " ?Actor movie:name \"George Clooney\". \r\n"
-				+ "           ?Movie f:type (movie:quality movie:Good ?r) . \r\n"
-				+ "           BIND(f:AND_PROD(?r,?l) as ?Rank) . \r\n" + "           FILTER (?Rank > 0.5)\n" + "}\n"
-				+ "# GOOD MOVIES WHOSE LEADING ROLE IS GEORGE CLOONEY";
+		 
 
-		String filename = "C:/Users/Administrator/git/logFSASPARQL/logfsasparql/food.owl";
+		String filename = "C:/Users/Administrator/git/SPARQL2PL/sparql2pl/food.owl";
 
-		/*
-		FsaSPARQL fsa = new FsaSPARQL();
-		String s = fsa.FSAtoSPARQL(basicA, false);
+		 
 		pSPARQL ps = new pSPARQL();
 
-		List<List<String>> rules = ps.SPARQLtoProlog(s, 0);
+		List<List<String>> rules = ps.SPARQLtoProlog(db4, 0);
 		System.out.println(rules);
 
 		String pp = "";
@@ -2029,12 +2071,15 @@ public class pSPARQL {
 			pp = pp + "\n" + prule;
 
 		}
-
+		
+		
+		
 		String t1 = "use_module(library(semweb/rdf11))";
 		org.jpl7.Query q1 = new org.jpl7.Query(t1);
 		System.out.print((q1.hasSolution() ? "" : ""));
 		q1.close();
 
+		
 		String t11 = "use_module(library(semweb/rdf_http_plugin))";
 		org.jpl7.Query q11 = new org.jpl7.Query(t11);
 		System.out.print((q11.hasSolution() ? "" : ""));
@@ -2053,6 +2098,20 @@ public class pSPARQL {
 		org.jpl7.Query q21c = new org.jpl7.Query(t21c);
 		System.out.print((q21c.hasSolution() ? "" : ""));
 		q21c.close();
+		
+		String[] ops = {
+				"'http://www.w3.org/2001/XMLSchema#decimal'(X^^TX,Y^^'http://www.w3.org/2001/XMLSchema#decimal'):-!, Y=X ",
+				"'http://jena.apache.org/ARQ/function#sqrt'(X^^TX,Y^^TX):-!, Y is sqrt(X) ",
+				"if(X,Y,Z,T):-!,((X=1^^_)->T=Y;T=Z)",
+				"call_function(X,Y,F,T):-!, X=..[_,TX,TYPE],Y=..[_,TY|_],NE=..[F,TX,TY],TAUX is NE,T=..['^^',TAUX,'http://www.w3.org/2001/XMLSchema#decimal']" };
+
+		for (int i = 0; i < ops.length; i++) {
+			String aprule = "asserta((" + ops[i] + "))";
+			org.jpl7.Query q3 = new org.jpl7.Query(aprule);
+			System.out.println((q3.hasSolution() ? aprule : ""));
+			q3.close();
+		}
+        
 
 		String t2 = "rdf_load('" + filename + "')";
 		org.jpl7.Query q2 = new org.jpl7.Query(t2);
@@ -2097,39 +2156,9 @@ public class pSPARQL {
 		for (Map<String, Term> solution : sols) {
 			System.out.println(solution);
 		}
-		*/
+		
 
-		/*
-		 * try {
-		 * 
-		 * File fout = new File(args[1]); FileOutputStream fos = new
-		 * FileOutputStream(fout);
-		 * 
-		 * BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
-		 * 
-		 * for (List<String> r : rules) {
-		 * 
-		 * 
-		 * 
-		 * writer.write(r.get(0) + ":-"); writer.newLine(); for (int i = 1; i <
-		 * r.size(); i++) { if (i + 1 == r.size()) {
-		 * 
-		 * writer.append(r.get(i) + "."); writer.newLine();
-		 * 
-		 * } else {
-		 * 
-		 * writer.append(r.get(i) + ","); writer.newLine();
-		 * 
-		 * } }
-		 * 
-		 * }
-		 * 
-		 * writer.close();
-		 * 
-		 * } catch (IOException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
-
+		 
 	};
 
 };

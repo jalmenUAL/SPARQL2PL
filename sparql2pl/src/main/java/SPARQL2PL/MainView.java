@@ -407,7 +407,7 @@ public class MainView extends VerticalLayout {
 				+ "       ?pi2 hotel:name \"Central Park\"  \r\n" + "       FILTER(?td2 >0.7)\n" + "   }\n" + "}\n"
 				+ "# HOTELS CLOSE TO THE EMPIRE STATE BUILDING AND OPTIONALLY CLOSE TO CENTRAL PARK";
 
-		// http://minerva.ual.es:8080/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30
+		// https://minerva.ual.es/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30
 
 		String twA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -419,7 +419,7 @@ public class MainView extends VerticalLayout {
 				+ "   ?s json:retweet_count ?retweets .\n" + "   FILTER( ?td  >= 0.8)\n" + " }\n"
 				+ "# TWEETS ABOUT UKRANIA WITH A HIGH NUMBER OF RETWEETS";
 
-		// http://minerva.ual.es:8080/api.social/twitterSearchUser/q/Obama
+		// https://minerva.ual.es/api.social/twitterSearchUser/q/Obama
 
 		String twB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -430,7 +430,7 @@ public class MainView extends VerticalLayout {
 				+ "   ?s f:type (json:followers_count fs:High ?td) \n" + "   FILTER(?td>=0.8)\n" + " }\n"
 				+ "# TWITTER ACCOUNTS ABOUT SPAIN WITH A HIGH NUMBER OF FOLLOWERS ";
 
-		// http://minerva.ual.es:8080/api.social//twitterUserTimeLine/screen_name/bbcmundo
+		// https://minerva.ual.es/api.social//twitterUserTimeLine/screen_name/bbcmundo
 
 		String twC = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -441,7 +441,7 @@ public class MainView extends VerticalLayout {
 				+ "      ?s f:type (json:retweet_count fs:High ?td) .\n" + "      ?s json:retweet_count ?retweets .\n"
 				+ "      FILTER(?td > 0.8)\n" + "}\n" + "# TWEETS OF THE BBC ACCOUNT WITH A HIGH NUMBER OF RETWEETS ";
 
-		// http://minerva.ual.es:8080/api.social/youtubeVideoSearch/q/Messi
+		// https://minerva.ual.es/api.social/youtubeVideoSearch/q/Messi
 
 		String ytA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -452,7 +452,7 @@ public class MainView extends VerticalLayout {
 				+ "   ?s json:statistics ?st .\n" + "   ?st f:type (json:viewCount fs:High ?td) .\n"
 				+ "   FILTER(?td >= 0.8) " + " }\n" + "# VIDEOS OF YOUTUBE ABOUT MESSI WITH A HIGH NUMBER OF VIEWS";
 
-		// http://minerva.ual.es:8080/api.social/youtubeChannelSearch/q/Messi
+		// https://minerva.ual.es/api.social/youtubeChannelSearch/q/Messi
 
 		String ytB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -464,7 +464,7 @@ public class MainView extends VerticalLayout {
 				+ "   FILTER(?td >= 0.8) " + " }\n"
 				+ "# CHANNELS OF YOUTUBE ABOUT MESSI WITH A HIGH NUMBER OF SUBSCRIBERS ";
 
-		// http://minerva.ual.es:8080/api.social/tmdbSearchMovies/q/Alien
+		// https://minerva.ual.es/api.social/tmdbSearchMovies/q/Alien
 
 		String tmdbA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -474,7 +474,7 @@ public class MainView extends VerticalLayout {
 				+ "   ?s f:type (json:popularity fs:High ?td) .\n" + "   ?s json:title ?Title .\n"
 				+ "   FILTER(?td >= 0.8)" + " }\n" + "# MOST POPULAR ALIEN MOVIES";
 
-		// http://minerva.ual.es:8080/api.social/tmdbSearchMovies/q/Peter
+		// https://minerva.ual.es/api.social/tmdbSearchMovies/q/Peter
 
 		String tmdbB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -999,7 +999,7 @@ public class MainView extends VerticalLayout {
 
 			} else if (e.getSource().getText().equals("Twitter A")) {
 				file.setValue(
-						"http://minerva.ual.es:8080/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30");
+						"https://minerva.ual.es/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1009,7 +1009,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("Twitter B")) {
-				file.setValue("http://minerva.ual.es:8080/api.social/twitterSearchUser/q/España");
+				file.setValue("https://minerva.ual.es/api.social/twitterSearchUser/q/España");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1019,7 +1019,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("Twitter C")) {
-				file.setValue("http://minerva.ual.es:8080/api.social//twitterUserTimeLine/screen_name/bbcmundo");
+				file.setValue("https://minerva.ual.es/api.social//twitterUserTimeLine/screen_name/bbcmundo");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1029,7 +1029,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("Youtube A")) {
-				file.setValue("http://minerva.ual.es:8080/api.social/youtubeVideoSearch/q/Messi");
+				file.setValue("https://minerva.ual.es/api.social/youtubeVideoSearch/q/Messi");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1039,7 +1039,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("Youtube B")) {
-				file.setValue("http://minerva.ual.es:8080/api.social/youtubeChannelSearch/q/Messi");
+				file.setValue("https://minerva.ual.es/api.social/youtubeChannelSearch/q/Messi");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1049,7 +1049,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("TMDB A")) {
-				file.setValue("http://minerva.ual.es:8080/api.social/tmdbSearchMovies/q/Alien");
+				file.setValue("https://minerva.ual.es/api.social/tmdbSearchMovies/q/Alien");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);
@@ -1059,7 +1059,7 @@ public class MainView extends VerticalLayout {
 				// answers.setVisible(false);
 				// editorP.setVisible(false);
 			} else if (e.getSource().getText().equals("TMDB B")) {
-				file.setValue("http://minerva.ual.es:8080/api.social/tmdbSearchPeople/q/Peter");
+				file.setValue("https://minerva.ual.es/api.social/tmdbSearchPeople/q/Peter");
 				radioGroup.setValue("JSON");
 
 				cv.setVisible(false);

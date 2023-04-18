@@ -1,0 +1,354 @@
+Prefix: : <http://www.semanticweb.org/social#>
+Prefix: owl2xml: <http://www.w3.org/2006/12/owl2-xml#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: sn: <http://www.semanticweb.org/social#>
+Prefix: swrl: <http://www.w3.org/2003/11/swrl#>
+Prefix: swrlb: <http://www.w3.org/2003/11/swrlb#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <http://www.semanticweb.org/social#>
+
+
+Datatype: xsd:dateTime
+
+    
+Datatype: xsd:integer
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: sn:added_by
+
+    SubPropertyOf: 
+        sn:created_by
+    
+    Domain: 
+        sn:Event
+    
+    Range: 
+        sn:User
+    
+    
+ObjectProperty: sn:attends_to
+
+    Domain: 
+        sn:User
+    
+    Range: 
+        sn:Event
+    
+    InverseOf: 
+        sn:confirmed_by
+    
+    
+ObjectProperty: sn:confirmed_by
+
+    Domain: 
+        sn:Event
+    
+    Range: 
+        sn:User
+    
+    InverseOf: 
+        sn:attends_to
+    
+    
+ObjectProperty: sn:created_by
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        sn:Activity
+    
+    Range: 
+        sn:User
+    
+    
+ObjectProperty: sn:friend_of
+
+    Characteristics: 
+        Symmetric,
+        Irreflexive
+    
+    Domain: 
+        sn:User
+    
+    Range: 
+        sn:User
+    
+    
+ObjectProperty: sn:invited_to
+
+    Domain: 
+        sn:User
+    
+    Range: 
+        sn:Event
+    
+    
+ObjectProperty: sn:likes
+
+    Domain: 
+        sn:User
+    
+    Range: 
+        sn:Activity
+    
+    
+ObjectProperty: sn:sent_by
+
+    SubPropertyOf: 
+        sn:created_by
+    
+    Domain: 
+        sn:Message
+    
+    Range: 
+        sn:User
+    
+    
+DataProperty: sn:age
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        sn:User
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: sn:date
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        sn:Activity
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: sn:name
+
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        sn:User
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: sn:text
+
+    Domain: 
+        sn:Message
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: sn:title
+
+    Domain: 
+        sn:Event
+    
+    Range: 
+        xsd:string
+    
+    
+Class: owl:Thing
+
+    
+Class: sn:Activity
+
+    DisjointWith: 
+        sn:User
+    
+    
+Class: sn:Event
+
+    SubClassOf: 
+        sn:Activity
+    
+    DisjointWith: 
+        sn:Message
+    
+    
+Class: sn:Message
+
+    SubClassOf: 
+        sn:Activity
+    
+    DisjointWith: 
+        sn:Event
+    
+    
+Class: sn:User
+
+    DisjointWith: 
+        sn:Activity
+    
+    
+Individual: sn:antonio
+
+    Types: 
+        sn:User
+    
+    Facts:  
+     sn:attends_to  sn:conference,
+     sn:attends_to  sn:meeting,
+     sn:friend_of  sn:jesus,
+     sn:friend_of  sn:manuel,
+     sn:invited_to  sn:project,
+     sn:likes  sn:conference,
+     sn:likes  sn:meeting,
+     sn:age  49,
+     sn:name  "antonio"^^xsd:string
+    
+    
+Individual: sn:conference
+
+    Types: 
+        sn:Event
+    
+    Facts:  
+     sn:added_by  sn:antonio,
+     sn:title  "dbpl"^^xsd:string
+    
+    
+Individual: sn:jesus
+
+    Types: 
+        sn:User
+    
+    Facts:  
+     sn:attends_to  sn:meeting,
+     sn:attends_to  sn:seminar,
+     sn:friend_of  sn:antonio,
+     sn:friend_of  sn:manuel,
+     sn:likes  sn:meeting,
+     sn:likes  sn:msg1,
+     sn:likes  sn:seminar,
+     sn:age  51,
+     sn:name  "jesus"^^xsd:string
+    
+    
+Individual: sn:manuel
+
+    Types: 
+        sn:User
+    
+    Facts:  
+     sn:friend_of  sn:antonio,
+     sn:friend_of  sn:jesus,
+     sn:likes  sn:msg1,
+     sn:age  47,
+     sn:name  "manuel"^^xsd:string
+    
+    
+Individual: sn:meeting
+
+    Types: 
+        sn:Event
+    
+    Facts:  
+     sn:added_by  sn:richard,
+     sn:title  "research questions"^^xsd:string
+    
+    
+Individual: sn:msg1
+
+    Types: 
+        sn:Message
+    
+    Facts:  
+     sn:sent_by  sn:antonio,
+     sn:text  "I am very bussy"^^xsd:string
+    
+    
+Individual: sn:msg2
+
+    Types: 
+        sn:Message
+    
+    Facts:  
+     sn:sent_by  sn:manuel,
+     sn:text  "hello, everybody"^^xsd:string
+    
+    
+Individual: sn:msg3
+
+    Types: 
+        sn:Message
+    
+    Facts:  
+     sn:sent_by  sn:susan,
+     sn:text  "bye!"^^xsd:string
+    
+    
+Individual: sn:project
+
+    Types: 
+        sn:Event
+    
+    Facts:  
+     sn:added_by  sn:jesus,
+     sn:title  "debugging"^^xsd:string
+    
+    
+Individual: sn:richard
+
+    Types: 
+        sn:User
+    
+    Facts:  
+     sn:attends_to  sn:meeting,
+     sn:attends_to  sn:seminar,
+     sn:friend_of  sn:susan,
+     sn:invited_to  sn:project,
+     sn:likes  sn:msg1,
+     sn:age  42,
+     sn:name  "richard"^^xsd:string
+    
+    
+Individual: sn:seminar
+
+    Types: 
+        sn:Event
+    
+    Facts:  
+     sn:added_by  sn:antonio,
+     sn:title  "sparql"^^xsd:string
+    
+    
+Individual: sn:susan
+
+    Types: 
+        sn:User
+    
+    Facts:  
+     sn:attends_to  sn:conference,
+     sn:attends_to  sn:meeting,
+     sn:friend_of  sn:richard,
+     sn:invited_to  sn:project,
+     sn:likes  sn:conference,
+     sn:likes  sn:meeting,
+     sn:likes  sn:msg1,
+     sn:likes  sn:msg2,
+     sn:likes  sn:msg3,
+     sn:age  30,
+     sn:name  "susan"^^xsd:string
+    
+    
