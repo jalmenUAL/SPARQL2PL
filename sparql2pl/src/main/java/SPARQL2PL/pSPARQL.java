@@ -357,15 +357,13 @@ public class pSPARQL {
 					+ query.getQueryPattern().toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
 					+ "'" + ",";
 
-			if (((ExprAggregator) eks).getAggregator().toString().startsWith("count")) {
-
-			} else {
+			 
 
 				for (String v : varsOut) {
 					head = head + v.toUpperCase() + ",";
 				}
 
-			}
+			 
 
 			head = head.substring(0, head.length() - 1);
 			head = head + ")";
@@ -1946,32 +1944,25 @@ public class pSPARQL {
 				+ "SELECT ?user (count(*) AS ?areg)  \r\n" + "WHERE {\r\n" + "  ?conf sn:added_by ?user .\r\n"
 				+ " \r\n" + "}\r\n" + "GROUP BY ?user \r\n";
 
-		//MIRAR
+		
 		String prog31 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
-				+ "  ?conf sn:added_by ?user .\r\n"  + "}\r\n"
+				+ "SELECT ?user (min(?age) AS ?areg)  \r\n" + "WHERE {\r\n"
+				+ "  ?conf sn:added_by ?user . ?user sn:age ?age \r\n"  + "}\r\n"
 				+ "GROUP BY ?user \r\n";
 
-		//MIRAR
+		 
 		String prog32 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
-				+ "  ?conf sn:added_by ?user .\r\n" + "   \r\n" + "}\r\n"
-				+ "GROUP BY ?user \r\n" + "HAVING (SUM(?reg) > 2000)";
+				+ "SELECT ?user (sum(?age) AS ?areg) (min(?age) as ?mreg)  \r\n" + "WHERE {\r\n"
+				+ "  ?conf sn:added_by ?user . ?user sn:age ?age \r\n" + "   \r\n" + "}\r\n"
+				+ "GROUP BY ?user \r\n" + "HAVING (MIN(?age) > 50)";
 
-		//MIRAR
-		String prog33 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?user (sum(?reg) AS ?areg) (min(?reg) as ?mreg)  \r\n" + "WHERE {\r\n"
-				+ "  ?conf sn:added_by ?user .\r\n" + " { SELECT ?conf ?reg WHERE { ?conf sn:registration ?reg }} .\r\n"
-				+ "}\r\n" + "GROUP BY ?user \r\n" + "HAVING (min(?reg) > 400)";
+		 
 
 		String db1 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
@@ -1996,7 +1987,7 @@ public class pSPARQL {
 				+ "WHERE { ?u fd:made_from ?m . ?u fd:time ?t . FILTER(?t<60) . FILTER(?t>0) }\r\n" + "GROUP BY ?u}\r\n"
 				+ "FILTER(?l > 3) .\r\n" + "}";
 
-		//MIRAR
+		
 		String db4 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
@@ -2142,14 +2133,19 @@ public class pSPARQL {
 				prule2 = prule2 + r.get(i) + ',';
 			}
 			prule2 = prule2.substring(0, prule2.length() - 1);
+			
 			String aprule = "asserta((" + prule2 + "))";
 			org.jpl7.Query q3 = new org.jpl7.Query(aprule);
 			System.out.println((q3.hasSolution() ? aprule : ""));
 			q3.close();
 
 		}
+		
+		
 
 		org.jpl7.Query q3 = new org.jpl7.Query(rules.get(0).get(0));
+		
+		
 		Map<String, Term>[] sols = q3.allSolutions();
 		q3.close();
 
