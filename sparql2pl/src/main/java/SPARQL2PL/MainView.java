@@ -218,218 +218,207 @@ public class MainView extends VerticalLayout {
 		 
 
 		String foodA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				
+				
 				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
 				+ "SELECT ?u\r\n" 
 				+ "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:made_from fd:flour \r\n" + "}";
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:made_from fd:flour \r\n" + "}";
 
 		String foodB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				
 				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
-				+ "SELECT ?u\r\n" + "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:time ?t .\r\n" 
+				+ "SELECT ?u\r\n" 
+				+ "WHERE {\r\n"
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:time ?t .\r\n" 
 				+ "FILTER (?t < 30 || ?t > 60)\r\n" + "}";
 
 		String foodC = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				
 				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
 				+ "SELECT ?u\r\n" + "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:season fd:salt .\r\n" 
-				+ "{SELECT ?u (count(*) as ?l)\r\n"
-				+ "WHERE { ?u fd:made_from ?m . ?u fd:time ?t . "
-				+ "FILTER(?t<60) . FILTER(?t>0) }\r\n" 
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:season fd:salt .\r\n" 
+				+ "	{SELECT ?u (count(*) as ?l)\r\n"
+				+ "		WHERE { ?u fd:made_from ?m .\r\n"
+				+ "			 ?u fd:time ?t .\r\n "
+				+ "		FILTER(?t<60) . FILTER(?t>0)}\r\n" 
 				+ "GROUP BY ?u}\r\n"
 				+ "FILTER(?l > 3) .\r\n" + "}";
 
 		
 		String foodD = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
-				+ "SELECT ?m\r\n" 
-				+ "WHERE\r\n" + "{\r\n"
-				+ "?m rdf:type fd:menu .\r\n" 
-				+ "?m fd:price ?p\r\n" 
-				+ "FILTER(?p>=100) ." 
-				+ "FILTER EXISTS\r\n"
-				+ "{\r\n" 
-				+ "SELECT ?m ?d ?t ?ni WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
-				+ "FILTER(?t <60) .\r\n"
-				+ "{SELECT ?d (count(*) as ?ni) WHERE { ?d fd:made_from ?i}\r\n" 
-				+ "GROUP BY ?d\r\n" + "}\r\n"
-				+ "FILTER(?ni <= 2)\r\n" + "}" + "}" + "}";
-
-		String foodE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
-				+ "SELECT ?c (sum(?t*?t) as ?tt)" 
-				+ "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:cooked ?c .\r\n" 
-				+ "?u fd:time ?t .\r\n" 
-				+ "}\r\n"
-				+ "GROUP BY ?c";
-
-		String foodF = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
-				+ "SELECT ?u " 
-				+ "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:cooked fd:raw .\r\n" 
-				+ "?u fd:time ?t .\r\n"
-				+ "OPTIONAL {?u fd:made_from fd:milk}\r\n" 
-				+ "FILTER(?t >= 60)\r\n" + "}";
-
-		String foodG = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
-				+ "SELECT ?u " 
-				+ "WHERE {\r\n"
-				+ "?u rdf:type fd:food .\r\n" 
-				+ "?u fd:cooked fd:raw .\r\n" 
-				+ "?u fd:time ?t .\r\n"
-				+ "MINUS {?u fd:made_from fd:milk}\r\n" 
-				+ "FILTER(?t >= 60)\r\n" + "}";
-
-		 
-		String foodH = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				
 				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
 				+ "SELECT ?m\r\n" 
 				+ "WHERE\r\n" 
 				+ "{\r\n"
-				+ "?m rdf:type fd:menu .\r\n" 
-				+ "?m fd:price ?p\r\n" 
-				+ "FILTER(?p>=10) ." 
-				+ "FILTER NOT EXISTS\r\n"
-				+ "{\r\n" 
-				+ "SELECT ?m ?d ?t ?ni WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
-				+ "FILTER(?t >60) .\r\n"
-				+ "{SELECT ?d (count(*) as ?ni) WHERE { ?d fd:made_from ?i}\r\n" 
-				+ "GROUP BY ?d\r\n" 
+				+ "	?m rdf:type fd:menu .\r\n" 
+				+ "	?m fd:price ?p\r\n" 
+				+ "	FILTER(?p>=100) .\r\n" 
+				+ "	FILTER EXISTS\r\n"
+				+ "	{\r\n" 
+				+ "		SELECT ?m ?d ?t ?ni\r\n"
+				+ "			WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
+				+ "			FILTER(?t <60) .\r\n"
+				+ "			{\r\n"
+				+ "			SELECT ?d (count(*) as ?ni)\r\n"
+				+ "			WHERE { ?d fd:made_from ?i}\r\n" 
+				+ "			GROUP BY ?d\r\n" + "}\r\n"
+				+ "	FILTER(?ni <= 2)\r\n" 
+				+ "}" + "}" + "}";
+
+		String foodE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?c (sum(?t) as ?tt)\r\n" 
+				+ "WHERE {\r\n"
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:cooked ?c .\r\n" 
+				+ "	?u fd:time ?t .\r\n" 
+				+ "}\r\n"
+				+ "GROUP BY ?c";
+
+		String foodF = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u " 
+				+ "WHERE {\r\n"
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:cooked fd:raw .\r\n" 
+				+ "	?u fd:time ?t .\r\n"
+				+ "	OPTIONAL {?u fd:made_from fd:milk}\r\n" 
+				+ "	FILTER(?t >= 60)\r\n" + "}";
+
+		String foodG = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u " 
+				+ "WHERE {\r\n"
+				+ "	?u rdf:type fd:food .\r\n" 
+				+ "	?u fd:cooked fd:raw .\r\n" 
+				+ "	?u fd:time ?t .\r\n"
+				+ "	MINUS {?u fd:made_from fd:milk}\r\n" 
+				+ "	FILTER(?t >= 60)\r\n" + "}";
+
+		 
+		String foodH = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?m\r\n" 
+				+ "WHERE\r\n" 
+				+ "{\r\n"
+				+ "	?m rdf:type fd:menu .\r\n" 
+				+ "	?m fd:price ?p\r\n" 
+				+ "	FILTER(?p>=10) .\r\n" 
+				+ "	FILTER NOT EXISTS\r\n"
+				+ "		{\r\n" 
+				+ "			SELECT ?m ?d ?t ?ni\r\n"
+				+ "			WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
+				+ "			FILTER(?t >60) .\r\n"
+				+ "		{\r\n"
+				+ "			SELECT ?d (count(*) as ?ni)\r\n"
+				+ "			WHERE { ?d fd:made_from ?i}\r\n" 
+				+ "			GROUP BY ?d\r\n" 
 				+ "}\r\n"
 				+ "FILTER(?ni <= 2)\r\n" 
 				+ "}" + "}" + "}";
 
 		String foodI = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				
 				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
 				+ "SELECT ?m WHERE {\r\n"
 				+ "{?m fd:cooked fd:raw }\r\n" 
-				+ "UNION {\r\n" 
+				+ "	UNION {\r\n" 
 				+ "{?m fd:cooked fd:roast }\r\n" 
-				+ "UNION\r\n"
+				+ "	UNION\r\n"
 				+ "{?m fd:cooked fd:bake } } }";
 		
-		String socialA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" 
-				+ "PREFIX f: <http://www.fuzzy.org/>"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
-				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" 
-				+ "SELECT ?user WHERE {"
-				+ "?user rdf:type sn:User . "
-				+ "?user sn:age 51 " 
+		String socialA =   "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n" 
+				 
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\r\n"
+				 
+				+ "SELECT ?user WHERE {\r\n"
+				+ "	?user rdf:type sn:User .\r\n "
+				+ "	?user sn:age 51\r\n " 
 				+ "} ";
 		
-		String socialB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
-				+ "SELECT ?user ?user2 WHERE "
-				+ "{" + "?user rdf:type sn:User . ?user sn:friend_of ?user2 }";
+		String socialB =   "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\r\n"
+				+ "SELECT ?user ?user2 WHERE\r\n "
+				+ "{\n"
+				+ " ?user rdf:type sn:User .\r\n"
+				+ " ?user2 rdf:type sn:User .\r\n"
+				+ " ?user sn:friend_of ?user2 }";
 		
-		String socialC = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+		String socialC =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?NUSER1 ?NUSER2 WHERE {\n" 
-				+ "?USER1 sn:name ?NUSER1 . "
-				+ "?USER2 sn:name ?NUSER2 . \n"
-				+ "?USER1 sn:age ?AU1 . "
-				+ "?USER2 sn:age ?AU2 . " 
-				+ "FILTER(?AU1 > 40 )." 
-				+ "FILTER (?AU2 > 50) }\n";
+				+ "SELECT ?nuser   WHERE\n "
+				+ "{\n"
+				+ "	?user rdf:type sn:User .\n"
+				+ "	?user sn:name ?nuser .\n "				 
+				+ "	?user sn:age ?age .\n "			  
+				+ "	FILTER(?age > 40 )}\n"; 
+				 
 		
-		String socialD = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+		String socialD =   "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?USER ?EVENT WHERE "
-				+ "{\n" + "?USER rdf:type sn:User .\n" 
-				+ "?USER sn:age ?AGE .\n"
-				+ "FILTER (?AGE > 40) .\n" 
-				+ "?USER sn:attends_to ?EVENT" + "}\n";
+				+ "SELECT ?user ?event WHERE\n "
+				+ "{\n" 
+				+ "	?user rdf:type sn:User .\n" 
+				+ "	?user sn:age ?age .\n"
+				+ "	FILTER (?age > 40) .\n" 
+				+ "	?user sn:attends_to ?event\r\n" 
+				+ "}\n";
 		
-		String socialE = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" 
-				+ "PREFIX f: <http://www.fuzzy.org/>"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
-				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" 
-				+ "SELECT ?Ind ?age ?event WHERE "
-				+ "{  ?Ind sn:age ?age ." 
-				+ "OPTIONAL { SELECT ?Ind ?event WHERE { ?Ind sn:attends_to ?event "
-				+ "OPTIONAL {?Ind rdf:type sn:User} } } " + "} ";
-		
-		String socialF = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+		String socialE =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" 
+				 
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" 
-				+ "FILTER (?AGE > 25) .\n"
-				+ "FILTER NOT EXISTS {SELECT ?USER WHERE {\n" 
-				+ "?USER sn:attends_to ?Event \n" + "}\n" + "}}\n";
+				 
+				+ "SELECT ?user ?age ?event WHERE\n "
+				+ "{\n"
+				+ "	?user rdf:type sn:User .\n" 
+				+ " ?user sn:age ?age .\n" 
+				+ "OPTIONAL {\r\n"
+				+ "	 SELECT ?user ?event WHERE { ?user sn:attends_to ?event } } " + "} ";
 		
-		String socialG = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>" 
-				+ "SELECT ?Ind WHERE "
-				+ "{ ?Ind rdf:type sn:User . "
-				+ "MINUS { ?Ind sn:attends_to ?Event } }";
-		
-		String socialH = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+		String socialF =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
-				+ "SELECT ?USER WHERE {\n" 
-				+ "?USER sn:age ?AGE .\n" 
-				+ "FILTER (?AGE > 25) .\n"
-				+ "FILTER NOT EXISTS {SELECT ?AGE WHERE {\n" 
-				+ "?USER2 sn:age ?AGE2 .\n" 
-				+ "FILTER (?AGE < ?AGE2 ) }\n"
+				+ "SELECT ?user WHERE {\n" 
+				+ "?user rdf:type sn:User .\n"
+				+ "?user sn:age ?age .\n" 
+				+ "FILTER (?age > 25) .\n"
+				+ "FILTER NOT EXISTS\r\n"
+				+ " {	SELECT ?user WHERE {\n" 
+				+ "			?user sn:attends_to ?event" + "}" + "}}";
+		
+		String socialG =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n" 
+				+ "SELECT ?user WHERE\n "
+				+ "{ ?user rdf:type sn:User .\n "
+				+ "MINUS { ?user sn:attends_to ?event } }";
+		
+		String socialH =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?user WHERE {\n" 
+				+ "	?user rdf:type sn:User .\n"
+				+ "	?user sn:age ?age .\n" 
+				+ "	FILTER (?age > 25) .\n"
+				+ "	FILTER NOT EXISTS\r\n"
+				+ "	 {SELECT ?age WHERE {\n" 
+				+ "			?user2 rdf:type sn:User .\n"
+				+ "			?user2 sn:age ?age2 .\n" 
+				+ "			FILTER (?age < ?age2 ) }\n"
 				+ "}}\n";
 		
-		String socialI = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+		String socialI =  "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
 				+ "SELECT ?user (count(*) AS ?areg)  \r\n" 
 				+ "WHERE {\r\n" 
-				+ "?conf sn:added_by ?user .\r\n"
-				+ " \r\n" + "}\r\n" 
+				+ "	?user rdf:type sn:User .\n"
+				+ "	?conf sn:added_by ?user }\r\n" 
 				+ "GROUP BY ?user \r\n";
 
 		AceEditor editorP = new AceEditor();
@@ -479,6 +468,10 @@ public class MainView extends VerticalLayout {
 		MenuBar menuBar = new MenuBar();
 		menuBar.setWidth("100%");
 		ComponentEventListener<ClickEvent<MenuItem>> listener = e -> {
+			
+			answers.removeAllColumns();
+			editorP.clear();
+			
 			if (e.getSource().getText().equals("Food A")) {
 				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
@@ -881,10 +874,8 @@ public class MainView extends VerticalLayout {
 		layout.add(lanswers);
 		layout.add(cv);
 		layout.add(edP);
-		// CAMBIAR
 		cv.setVisible(true);
 		editor.setLiveAutocompletion(true);
-		// CAMBIAR
 		editorP.setVisible(true);
 		add(layout);
 		this.setSizeFull();
@@ -900,7 +891,6 @@ public class MainView extends VerticalLayout {
 	public void load_rdf(String url) {
 		model.removeAll();
 		model.clearNsPrefixMap();
-		model.setNsPrefix("fs", "http://www.fuzzysets.org#");
 		try {
 			model.read(url, "RDF/XML");
 		} catch (Exception e) {
@@ -929,7 +919,6 @@ public class MainView extends VerticalLayout {
 	public void load_ttl(String url) {
 		model.removeAll();
 		model.clearNsPrefixMap();
-		model.setNsPrefix("fs", "http://www.fuzzysets.org#");
 		try {
 			model.read(url, "TTL");
 		} catch (Exception e) {
@@ -957,15 +946,13 @@ public class MainView extends VerticalLayout {
 
 	public void autocompletion() {
 
-		List<String> l = new ArrayList<String>();
-		 
+		List<String> l = new ArrayList<String>();	 
 		l.add("SELECT");
 		l.add("WHERE");
 		l.add("FILTER");
 		l.add("HAVING");
 		l.add("BIND");
 		l.add("ORDER BY");
-		l.add("VALUES");
 		l.add("LET");
 		editor.setCustomAutocompletion(l);
 
@@ -973,8 +960,7 @@ public class MainView extends VerticalLayout {
 
 	public void show_rdf() {
 
-		List<String> l = new ArrayList<String>();
-		 
+		List<String> l = new ArrayList<String>();	 
 		l.add("SELECT");
 		l.add("WHERE");
 		l.add("FILTER");
@@ -1000,33 +986,24 @@ public class MainView extends VerticalLayout {
 
 		 
 
-		String crisp = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+		String crisp = 
+				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n" + "PREFIX f: <http://www.fuzzy.org#>\r\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n" 
 				+ "PREFIX json: <http://www.json.org#>\r\n"
 				+ "SELECT ?Subject ?Property ?Object WHERE { ?Subject ?Property ?Object . \n"
-				+ "FILTER(!STRSTARTS(STR(?Subject), 'http://www.fuzzy.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Property), 'http://www.fuzzy.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Object), 'http://www.fuzzy.org'))"
-				+ "FILTER(!STRSTARTS(STR(?Subject), 'http://www.w3.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Property), 'http://www.w3.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Object), 'http://www.w3.org'))" + " }" + " ORDER BY ?Property";
+				+ " }" 
+				+ " ORDER BY ?Property";
 
 		 
 
-		List<HashMap<String, RDFNode>> rows_dataset_fuzzy = new ArrayList<>();
-		List<HashMap<String, RDFNode>> rows_dataset_crisp = new ArrayList<>();
-
-		 
-		Query query_crisp = QueryFactory.create(crisp);
 		
+		List<HashMap<String, RDFNode>> rows_dataset_crisp = new ArrayList<>(); 
+		Query query_crisp = QueryFactory.create(crisp);
 		ResultSet result_crisp = (ResultSet) QueryExecutionFactory.create(query_crisp, model).execSelect();
-		 
 		dataset.removeAllColumns();
-		 
 		List<String> variables_crisp = result_crisp.getResultVars();
-		rows_dataset_fuzzy.clear();
 		rows_dataset_crisp.clear();
 		 
 
@@ -1053,7 +1030,6 @@ public class MainView extends VerticalLayout {
 		if (rows_dataset_crisp.size() > 0) {
 			ldataset.setVisible(true);
 			dataset.setVisible(true);
-
 			HashMap<String, RDFNode> sr = rows_dataset_crisp.get(0);
 			for (Map.Entry<String, RDFNode> entry : sr.entrySet()) {
 				dataset.addColumn(h -> h.get(entry.getKey())).setHeader(entry.getKey()).setAutoWidth(true)
@@ -1064,13 +1040,11 @@ public class MainView extends VerticalLayout {
 												Float.parseFloat(y.get(entry.getKey()).toString()))
 										: x.get(entry.getKey()).toString().compareTo(y.get(entry.getKey()).toString()));
 			}
-			// show_notification("Successful!", "Crisp dataset has been downloaded!");
 		} else {
 			show_notification("Downloaded!", "This crisp dataset is empty!");
 		}
 		dataset.setItems(rows_dataset_crisp);
-
-		 
+ 
 		ldataset.add(dataset);
 		editor.setCustomAutocompletion(l);
 
@@ -1176,18 +1150,11 @@ public class MainView extends VerticalLayout {
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				show_notification("Format Error", "The dataset is not in JSON format");
-
 			}
-
 			model.removeAll();
 			model.clearNsPrefixMap();
 			model.setNsPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
-			// model.setNsPrefix("json", "http://www.json.org#");
 			model.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-			// model.setNsPrefix("owl", "http://www.w3.org/2002/07/owl#");
-			model.setNsPrefix("f", "http://www.fuzzy.org#");
-			model.setNsPrefix("fs", "http://www.fuzzysets.org#");
-
 			load_tree(e, "");
 
 		} catch (MalformedURLException e1) {
