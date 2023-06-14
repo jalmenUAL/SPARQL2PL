@@ -874,7 +874,7 @@ public class pSPARQL {
 					head = "p" + current + "_" + step;
 				}
 
-				head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
+				//head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -882,8 +882,8 @@ public class pSPARQL {
 				} else {
 					head = "p" + current + "_" + step + "(";
 				}
-				head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
-						+ ",";
+				//head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
+				//		+ ",";
 				for (String v : varsOut) {
 					head = head + v.toUpperCase() + ",";
 				}
@@ -1128,7 +1128,7 @@ public class pSPARQL {
 					head = "p" + current + "_" + step;
 				}
 
-				head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
+				//head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -1137,8 +1137,8 @@ public class pSPARQL {
 					head = "p" + current + "_" + step + "(";
 				}
 
-				head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
-						+ ",";
+				//head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
+				//		+ ",";
 
 				for (String v : varsSub) {
 					head = head + v.toUpperCase() + ",";
@@ -1212,7 +1212,7 @@ public class pSPARQL {
 					head = "p" + current + "_" + step;
 				}
 
-				head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
+				//head = head + "('" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -1221,8 +1221,8 @@ public class pSPARQL {
 					head = "p" + current + "_" + step + "(";
 				}
 
-				head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
-						+ ",";
+				//head = head + "'" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + "'"
+				//		+ ",";
 
 				for (String v : varsSub) {
 					head = head + v.toUpperCase() + ",";

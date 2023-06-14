@@ -88,10 +88,11 @@ public class MainView extends VerticalLayout {
 	TextField file = new TextField();
 	Integer step = 0;
 
-	VerticalLayout ldataset_fuzzy = new VerticalLayout();
-	VerticalLayout ldataset_crisp = new VerticalLayout();
-	Grid<HashMap<String, RDFNode>> dataset_fuzzy = new Grid<HashMap<String, RDFNode>>();
-	Grid<HashMap<String, RDFNode>> dataset_crisp = new Grid<HashMap<String, RDFNode>>();
+	String food = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\food.owl";
+	String social = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\social.owl";
+	
+	VerticalLayout ldataset = new VerticalLayout();
+	Grid<HashMap<String, RDFNode>> dataset = new Grid<HashMap<String, RDFNode>>();
 	OntModel model = ModelFactory.createOntologyModel();
 	AceEditor editor = new AceEditor();
 	AceEditor editorO = new AceEditor();
@@ -108,18 +109,18 @@ public class MainView extends VerticalLayout {
 	@Route("tabs-content")
 	public class TabsContent extends Div {
 
-		private final Tab fdt;
+		 
 		private final Tab cdt;
 		private final Tab turtle;
 		private final VerticalLayout content;
 
 		public TabsContent() {
 			this.getStyle().set("width", "100%");
-			fdt = new Tab("Fuzzy Dataset");
-			cdt = new Tab("Crisp Dataset");
+			
+			cdt = new Tab("Dataset");
 			turtle = new Tab("Turtle View");
 
-			Tabs tabs = new Tabs(fdt, cdt, turtle);
+			Tabs tabs = new Tabs(cdt, turtle);
 			tabs.addSelectedChangeListener(event -> setContent(event.getSelectedTab()));
 
 			content = new VerticalLayout();
@@ -132,10 +133,8 @@ public class MainView extends VerticalLayout {
 		private void setContent(Tab tab) {
 			content.removeAll();
 
-			if (tab.equals(fdt)) {
-				content.add(ldataset_fuzzy);
-			} else if (tab.equals(cdt)) {
-				content.add(ldataset_crisp);
+			 if (tab.equals(cdt)) {
+				content.add(ldataset);
 			} else {
 				content.add(editorO);
 			}
@@ -151,9 +150,9 @@ public class MainView extends VerticalLayout {
 		layout.getStyle().set("width", "100%");
 		layout.getStyle().set("background", "#F8F8F8");
 
-		Image lab = new Image("img/banner-fsa.png", "banner");
+		Image lab = new Image("img/bannerspl.png", "banner");
 		lab.setWidth("100%");
-		lab.setHeight("150px");
+		lab.setHeight("200px");
 
 		HorizontalLayout lfile = new HorizontalLayout();
 		Label ds = new Label("URL Dataset (Type one or Select an Example)");
@@ -172,20 +171,18 @@ public class MainView extends VerticalLayout {
 		RadioButtonGroup<String> radioGroup = new RadioButtonGroup<>();
 		radioGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
 		radioGroup.setLabel("Select Type of Resource");
-		radioGroup.setItems("RDF/XML", "JSON", "TURTLE", "DBPEDIA", "WIKIDATA");
+		radioGroup.setItems("RDF/XML", "TURTLE");
 		radioGroup.getStyle().set("font-size", "80%");
 		radioGroup.setValue("RDF/XML");
 
 		Label fsaq = new Label();
-		fsaq.add(new Html("<b style='font-size:150%; background:black; color:white;'>FSA-SPARQL Query</b>"));
+		fsaq.add(new Html("<b style='font-size:150%; background:black; color:white;'>SPARQL Query</b>"));
 		Label dt = new Label();
 		dt.add(new Html("<b style='font-size:150%; background:black; color:white;'>Dataset</b>"));
-		Label fdt = new Label();
-		fdt.add(new Html("<b style='font-size:100%;'>Fuzzy RDF</b>"));
 		Label cdt = new Label();
-		cdt.add(new Html("<b style='font-size:100%;'>Crisp RDF</b>"));
+		cdt.add(new Html("<b style='font-size:100%; background:black; color:white;'>Dataset</b>"));
 		Label cv = new Label();
-		cv.add(new Html("<b style='font-size:150%;'>SPARQL Crisp Version</b>"));
+		cv.add(new Html("<b style='font-size:150%; background:black; color:white;'>Prolog encoding</b>"));
 
 		Button run = new Button("Execute");
 		run.setWidth("100%");
@@ -218,485 +215,139 @@ public class MainView extends VerticalLayout {
 		editorO.setShowPrintMargin(false);
 		editorO.setSofttabs(false);
 
-		String quanA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Actor \n" + "WHERE {\n"
-				+ "  ?Movie movie:actor ?Actor .\n" + "  ?Movie f:type (movie:quality movie:Excellent ?tg) . \n"
-				+ "  ?Movie f:type (movie:genre movie:Drama ?tt)\n" + "}\n" + "GROUP BY ?Actor \n"
-				+ "HAVING (f:QUANT(f:AND_PROD(?tg,?tt)>0.7) > 0.8)\n"
-				+ "# ACTORS AND ACTRESS WHO MOST OF MOVIES ARE EXCELLENT AND DRAMA";
+		 
 
-		String quanB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Actor \n" + "WHERE {\n"
-				+ "   ?Movie movie:actor ?Actor .\n" + "   ?Movie f:type (movie:genre movie:Thriller ?ta)\n" + "}\n"
-				+ "GROUP BY ?Actor\n" + "HAVING (f:QUANT(?ta>0.8)>0.8)\n"
-				+ "# ACTORS AND ACTRESS WHO MOST OF MOVIES ARE THRILLERS ";
-
-		String quanC = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Director \n" + "WHERE {\n"
-				+ "   ?Movie movie:directed_by ?Director .\n"
-				+ "   ?Movie f:type (movie:quality movie:Excellent ?tg) .\n"
-				+ "   ?Movie f:type (movie:genre movie:Drama ?tt)\n" + "}\n" + "GROUP BY ?Director \n"
-				+ "HAVING (f:QUANT(?tg>0.7)>0.8)\n" + "# DIRECTORS WHO MOST OF DRAMA MOVIES ARE EXCELLENT";
-
-		String quanD = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Director  \n" + "WHERE {\n"
-				+ "   ?Movie movie:directed_by ?Director .\n"
-				+ "   ?Movie f:type (movie:quality movie:Excellent ?tg) .\n"
-				+ "   ?Movie f:type (movie:genre movie:Comedy ?tt) .\n" + "   FILTER(?tt>0.7)\n" + "}\n"
-				+ "GROUP BY ?Director \n" + "HAVING (f:QUANT(?tg>0.7) > 0.8)\n"
-				+ "# DIRECTORS WHO MOST OF VERY COMIC MOVIES ARE EXCELLENT ";
-
-		String aggA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ( f:FCOUNT()  as ?total )\n" + "WHERE {\n"
-				+ "   ?Movie f:type (movie:genre movie:Comedy ?ta) \n" + "}\n" + "# NUMBER OF COMEDY MOVIES ";
-
-		String aggB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ( f:FCOUNT()  as ?total )\n" + "WHERE {\n"
-				+ "   ?Movie f:type (movie:genre movie:Comedy ?ta) .\n"
-				+ "   ?Movie f:type (movie:genre movie:Drama ?tb) \n" + "}\n" + "# NUMBER OF COMEDY AND DRAMA MOVIES ";
-
-		String aggC = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ( f:FCOUNT()  as ?total )\n" + "WHERE {\n"
-				+ "   ?Movie1 f:type (movie:genre movie:Comedy ?ta) .\n"
-				+ "   ?Movie2 f:type (movie:genre movie:Drama ?tb) \n" + "}\n"
-				+ "# NUMBER OF COMEDY MOVIES MULTIPLY BY THE NUMBER OF DRAMA MOVIES";
-
-		String aggD = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT (f:FSUM(?Duration) as ?total) \n" + "WHERE {\n"
-				+ "  ?Movie f:type (movie:genre movie:Comedy ?ta) .\n" + "  ?Movie movie:duration ?Duration \n" + "}\n"
-				+ "# TOTAL DURATION OF COMEDY MOVIES";
-
-		String aggE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Type (f:FSUM(?Duration) as ?total) \n" + "WHERE {\n"
-				+ "    ?Movie f:type (movie:genre movie:Comedy ?ta) .\n" + "    ?Movie movie:duration ?Duration . \n"
-				+ "    BIND(IF(?ta>0.7,'Comedy','Non Comedy') AS ?Type)\n" + "}\n" + "GROUP BY ?Type \n"
-				+ "# TOTAL DURATION OF COMEDY AND NON COMEDY MOVIES";
-
-		String aggF = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT  (f:FAVG(?Duration) as ?total) \n" + "WHERE {\n"
-				+ "    ?Movie f:type (movie:genre movie:Comedy ?ta) .\n" + "    ?Movie movie:duration ?Duration\n"
-				+ "}\n" + "# AVERAGE DURATION OF COMEDY MOVIES";
-
-		String aggG = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Movie ?Duration \n" + "WHERE {\n"
-				+ "   ?Movie f:type (movie:genre movie:Comedy ?ta) .\n" + "   ?Movie movie:duration ?Duration .\n"
-				+ "   FILTER (f:WEIGHT(?Duration)=?total) .\n" + "             {\n"
-				+ "              SELECT (f:FMAX(?Duration) as ?total)\n" + "              WHERE {\n"
-				+ "              ?Movie f:type (movie:genre movie:Comedy ?ta) .\n"
-				+ "              ?Movie movie:duration ?Duration\n" + "                    }\n" + "             }\n"
-				+ "}\n" + "# THE DURATION OF THE MOST COMIC MOVIE";
-
-		String aggH = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Actor (f:FCOUNT() as ?total)\n" + "WHERE {\n"
-				+ "       ?Movie f:type (movie:genre movie:Drama ?t) .\n" + "       ?Movie movie:actor ?Actor\n" + "}\n"
-				+ "GROUP BY ?Actor\n" + "# NUMBER OF DRAMA MOVIES BY ACTOR AND ACTRESS";
-
-		String aggI = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX movie: <http://www.movies.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Movie ?Duration \r\n" + "WHERE {\r\n"
-				+ "       ?Movie f:type (movie:genre movie:Drama ?ts) .\r\n"
-				+ "       ?Movie movie:duration ?Duration .\r\n" + "       FILTER (f:WEIGHT(?Duration)=?min) .\r\n"
-				+ "           {\r\n" + "             SELECT (f:FMIN(?Duration) as ?min)\r\n"
-				+ "             WHERE {\r\n" + "             ?Movie f:type (movie:genre movie:Drama ?tk) .\r\n "
-				+ "             ?Movie movie:duration ?Duration}\r\n" + "           }\n" + "      }\r\n"
-				+ "# DURATION OF THE LESSER DRAMATIC MOVIE";
-
-		String aggJ = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX hotel: <http://www.hotels.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "SELECT ?Quality (f:FAVG(?Price) as ?total)\r\n"
-				+ "WHERE {\r\n" + "      ?Movie f:type (hotel:quality ?Quality ?ta) .\r\n"
-				+ "      VALUES ?Quality {hotel:Bad hotel:Average hotel:Good} .\r\n"
-				+ "      ?Movie hotel:price ?Price .\r\n" + "}\r\n" + "GROUP BY ?Quality\r\n"
-				+ "# AVERAGE PRICE OF HOTELS GROUP BY QUALITY";
-
-		String basicA = "PREFIX movie: <http://www.movies.org#>\r\n"
+		String foodA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?Rank \r\n" + "WHERE {\n"
-				+ "           ?Movie movie:name ?Name . \r\n"
-				+ "           ?Movie movie:leading_role (?Actor ?l) . \r\n"
-				+ "           ?Actor movie:name \"George Clooney\". \r\n"
-				+ "           ?Movie f:type (movie:quality movie:Good ?r) . \r\n"
-				+ "           BIND(f:AND_PROD(?r,?l) as ?Rank) . \r\n" + "           FILTER (?Rank > 0.5)\n" + "}\n"
-				+ "# GOOD MOVIES WHOSE LEADING ROLE IS GEORGE CLOONEY";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u\r\n" 
+				+ "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:made_from fd:flour \r\n" + "}";
 
-		String basicB = "PREFIX hotel: <http://www.hotels.org#>\r\n"
+		String foodB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?Close \r\n" + "WHERE {\n"
-				+ "  ?Hotel hotel:name ?Name . \r\n" + "  ?Hotel rdf:type hotel:Hotel . \r\n"
-				+ "  ?Hotel hotel:close (?pi ?Close) . \r\n" + "  ?pi hotel:name \"Empire State Building\" \r\n"
-				+ "  FILTER (?Close > 0.75)\n" + "}\n" + "# CLOSEST HOTELS TO THE EMPIRE STATE BUILDING";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u\r\n" + "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:time ?t .\r\n" 
+				+ "FILTER (?t < 30 || ?t > 60)\r\n" + "}";
 
-		String basicC = "PREFIX hotel: <http://www.hotels.org#>\r\n"
+		String foodC = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?td \r\n" + "WHERE {\r\n"
-				+ "  ?Hotel hotel:name ?Name .\r\n" + "  ?Hotel rdf:type hotel:Hotel .\r\n"
-				+ "  ?Hotel hotel:price ?p \r\n" + "  BIND(f:AT_MOST(?p,200,300) as ?td)\n" + "  FILTER(?td >= 0.5)"
-				+ "}\n" + "# HOTEL OF PRICE AT MOST 200 DOLARS";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u\r\n" + "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:season fd:salt .\r\n" 
+				+ "{SELECT ?u (count(*) as ?l)\r\n"
+				+ "WHERE { ?u fd:made_from ?m . ?u fd:time ?t . "
+				+ "FILTER(?t<60) . FILTER(?t>0) }\r\n" 
+				+ "GROUP BY ?u}\r\n"
+				+ "FILTER(?l > 3) .\r\n" + "}";
 
-		String basicD = "PREFIX hotel: <http://www.hotels.org#>\r\n"
+		
+		String foodD = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?td \r\n" + "WHERE {\n"
-				+ "  ?Hotel hotel:name ?Name . \r\n" + "  ?Hotel rdf:type hotel:Hotel . \r\n"
-				+ "  ?Hotel hotel:price ?p . \r\n" + "  ?Hotel f:type (hotel:quality hotel:Good ?g) . \r\n"
-				+ "  ?Hotel f:type (hotel:style hotel:Elegant ?e) \r\n"
-				+ "  BIND(f:WSUM(0.1,f:AND_PROD(f:MORE_OR_LESS(?e), \r\n"
-				+ "           f:VERY(?g)),0.9,f:CLOSE_TO(?p,100,50)) as ?td) .\r\n" + "  FILTER(?td > 0.7)\n" + "}\n"
-				+ "# HOTELS VERY GOOD AND MORE OR LESS ELEGANT WITH PRICE CLOSE TO 100";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?m\r\n" 
+				+ "WHERE\r\n" + "{\r\n"
+				+ "?m rdf:type fd:menu .\r\n" 
+				+ "?m fd:price ?p\r\n" 
+				+ "FILTER(?p>=100) ." 
+				+ "FILTER EXISTS\r\n"
+				+ "{\r\n" 
+				+ "SELECT ?m ?d ?t ?ni WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
+				+ "FILTER(?t <60) .\r\n"
+				+ "{SELECT ?d (count(*) as ?ni) WHERE { ?d fd:made_from ?i}\r\n" 
+				+ "GROUP BY ?d\r\n" + "}\r\n"
+				+ "FILTER(?ni <= 2)\r\n" + "}" + "}" + "}";
 
-		String basicE = "PREFIX hotel: <http://www.hotels.org#>\r\n"
+		String foodE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?td ?close1 ?close2 \r\n" + "WHERE {\n"
-				+ "  ?Hotel hotel:name ?Name . \r\n" + "  ?Hotel rdf:type hotel:Hotel . \r\n" + "  {\n"
-				+ "    ?Hotel hotel:close (?close1 ?td) . \r\n" + "    ?pi hotel:name \"Empire State Building\"\n"
-				+ "  }\n" + "UNION\n" + "  {\n" + "    ?Hotel hotel:close (?close2 ?td) .\n"
-				+ "    ?pi2 hotel:name \"Central Park\" \n" + "  }\r\n" + "FILTER(?td >0.7)\n" + "}\n"
-				+ "# HOTELS CLOSE TO EMPIRE STATE BUILDING OR CENTRAL PARK";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?c (sum(?t*?t) as ?tt)" 
+				+ "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:cooked ?c .\r\n" 
+				+ "?u fd:time ?t .\r\n" 
+				+ "}\r\n"
+				+ "GROUP BY ?c";
 
-		String basicF = "PREFIX hotel: <http://www.hotels.org#>\r\n"
+		String foodF = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Name ?td1 ?td2 ?close1 ?close2 \r\n" + "WHERE {\n"
-				+ "   ?Hotel hotel:name ?Name . \r\n" + "   ?Hotel rdf:type hotel:Hotel . \r\n"
-				+ "   ?Hotel hotel:close (?close1 ?td1) . \r\n" + "   ?pi hotel:name \"Empire State Building\" .\n"
-				+ "   FILTER(?td1 >0.7)\n" + "OPTIONAL\n" + "   {\n" + "       ?Hotel hotel:close (?close2 ?td2) .\n"
-				+ "       ?pi2 hotel:name \"Central Park\"  \r\n" + "       FILTER(?td2 >0.7)\n" + "   }\n" + "}\n"
-				+ "# HOTELS CLOSE TO THE EMPIRE STATE BUILDING AND OPTIONALLY CLOSE TO CENTRAL PARK";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u " 
+				+ "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:cooked fd:raw .\r\n" 
+				+ "?u fd:time ?t .\r\n"
+				+ "OPTIONAL {?u fd:made_from fd:milk}\r\n" 
+				+ "FILTER(?t >= 60)\r\n" + "}";
 
-		// https://minerva.ual.es/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30
-
-		String twA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?text ?screen_name ?retweets ?td \n" + " WHERE\n"
-				+ " {\n" + "   ?s rdf:type json:item .\n" + "   ?s json:text ?text .\n" + "   ?s json:user ?u .\n"
-				+ "   ?u json:screen_name ?screen_name .\n" + "   ?s f:type (json:retweet_count fs:High ?td) .\n"
-				+ "   ?s json:retweet_count ?retweets .\n" + "   FILTER( ?td  >= 0.8)\n" + " }\n"
-				+ "# TWEETS ABOUT UKRANIA WITH A HIGH NUMBER OF RETWEETS";
-
-		// https://minerva.ual.es/api.social/twitterSearchUser/q/Obama
-
-		String twB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?name ?screen_name ?td \n" + "WHERE\n" + " {\n"
-				+ "   ?s json:screen_name ?screen_name .\n" + "   ?s json:name ?name .\n"
-				+ "   ?s f:type (json:followers_count fs:High ?td) \n" + "   FILTER(?td>=0.8)\n" + " }\n"
-				+ "# TWITTER ACCOUNTS ABOUT SPAIN WITH A HIGH NUMBER OF FOLLOWERS ";
-
-		// https://minerva.ual.es/api.social//twitterUserTimeLine/screen_name/bbcmundo
-
-		String twC = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?text ?retweets ?td \n" + "WHERE\n" + " {\n"
-				+ "      ?s rdf:type json:item .\n" + "      ?s json:text ?text .\n"
-				+ "      ?s f:type (json:retweet_count fs:High ?td) .\n" + "      ?s json:retweet_count ?retweets .\n"
-				+ "      FILTER(?td > 0.8)\n" + "}\n" + "# TWEETS OF THE BBC ACCOUNT WITH A HIGH NUMBER OF RETWEETS ";
-
-		// https://minerva.ual.es/api.social/youtubeVideoSearch/q/Messi
-
-		String ytA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Title ?td\n" + " WHERE\n" + " {\n"
-				+ "   ?s rdf:type json:item .\n" + "   ?s json:snippet ?sn .\n" + "   ?sn  json:title ?Title .\n"
-				+ "   ?s json:statistics ?st .\n" + "   ?st f:type (json:viewCount fs:High ?td) .\n"
-				+ "   FILTER(?td >= 0.8) " + " }\n" + "# VIDEOS OF YOUTUBE ABOUT MESSI WITH A HIGH NUMBER OF VIEWS";
-
-		// https://minerva.ual.es/api.social/youtubeChannelSearch/q/Messi
-
-		String ytB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Title ?td\n" + " WHERE\n" + " {\n"
-				+ "   ?s rdf:type json:item .\n" + "   ?s json:snippet ?sn .\n" + "   ?sn  json:title ?Title .\n"
-				+ "   ?s json:statistics ?st .\n" + "   ?st f:type (json:subscriberCount fs:High ?td) .\n"
-				+ "   FILTER(?td >= 0.8) " + " }\n"
-				+ "# CHANNELS OF YOUTUBE ABOUT MESSI WITH A HIGH NUMBER OF SUBSCRIBERS ";
-
-		// https://minerva.ual.es/api.social/tmdbSearchMovies/q/Alien
-
-		String tmdbA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Title ?td\n" + "WHERE\n" + " {\n"
-				+ "   ?s f:type (json:popularity fs:High ?td) .\n" + "   ?s json:title ?Title .\n"
-				+ "   FILTER(?td >= 0.8)" + " }\n" + "# MOST POPULAR ALIEN MOVIES";
-
-		// https://minerva.ual.es/api.social/tmdbSearchMovies/q/Peter
-
-		String tmdbB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Name ?td\n" + "WHERE\n" + " {\n"
-				+ "   ?s json:name ?Name .\n" + "   ?s f:type (json:popularity fs:High ?td) .\n"
-				+ "   FILTER(?td >= 0.8)\n " + " }\n" + "# MOST POPULAR ACTORS CALLED PETER";
-
-		// https://datos.unican.es/docencia/3223/asignaturas-de-master-2022-2023.json
-
-		String ldA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Title ?BachelorsDegree ?td \n" + "WHERE\n" + " {\n"
-				+ "   ?s json:title ?Title .\n" + "   ?s json:BacherlorsDegree ?BachelorsDegree .\n"
-				+ "   ?s f:type (json:courseCredits fs:High ?td) .\n" + "   FILTER(?td > 0.6)\n" + " }"
-				+ "# COURSES OF BACHELORS DEGREES IN THE UNIVERSITY OF CANTABRIA WITH HIGH NUMBER OF CREDITS ";
-
-		// https://do.diba.cat/api/dataset/museus/format/json
-
-		String tdB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				// + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-				+ "PREFIX json: <http://www.json.org#>\n" + "SELECT ?Address ?td\n" + "WHERE\n" + " {\n"
-				+ "   ?s json:elements ?e .\n" + "   ?e json:adreca_nom ?Address .\n"
-				+ "   ?e json:rel_municipis ?m .\n" + "   ?m f:type (json:nombre_habitants fs:High ?td) .\n"
-				+ "   FILTER(?td >= 0.9)\n" + " }\n"
-				+ "# MUSSEUMS IN CATALONIA LOCATED IN CITIES OF A HIGH NUMBER OF HABITANTS";
-
-		// https://minerva.ual.es/fsafulldata/social.owl
-
-		String owlA = "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n" + "PREFIX fs: <http://www.fuzzysets.org#>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\n" + "PREFIX json: <http://www.json.org#>\n" + "SELECT ?User ?td\n"
-				+ "WHERE\n" + " {\n" + "   ?User f:type (sn:age fs:High ?td) .\n" + "   FILTER(?td > 0.9)\n" + " }"
-				+ "# OLDEST PEOPLE IN THE SOCIAL NETWORK";
-
-		// https://minerva.ual.es/fsafulldata/course.owl
-
-		String owlB =
-				// "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-						// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-						+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-						// + "PREFIX json: <http://www.json.org#>\n"
-						+ "SELECT ?Student ?td\n" + "WHERE\n" + " {\n"
-						+ "   ?Student <http://www.semanticweb.org/course#is_enrolled> ?enrolled .\n"
-						+ "   ?enrolled f:type (<http://www.semanticweb.org/course#scores> fs:High ?td)\n"
-						+ "   FILTER(?td > 0.8)\n" + " }\n" + "# STUDENTS WITH THE HIGHEST SCORES";
-
-		// https://minerva.ual.es/fsafulldata/food.owl
-
-		String owlC =
-				// "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-						// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-						+ "PREFIX fs: <http://www.fuzzysets.org#>\n" + "PREFIX f: <http://www.fuzzy.org#>\n"
-						+ "PREFIX food: <http://www.semanticweb.org/food#>\n"
-						// + "PREFIX json: <http://www.json.org#>\n"
-						+ "SELECT ?Menu ?Dish ?td ?td2\n" + "WHERE\n" + " {\n"
-						+ "    ?Menu f:type (food:price fs:Low ?td) .\n" + "    ?Menu food:dish ?Dish .\n"
-						+ "    ?Dish f:type (food:time fs:Low ?td2) .\n" + "    FILTER(f:AND_PROD(?td,?td2) >= 0.8) .\n"
-						+ " }\n" + "# MENUS WITH THE LOWEST PRICE AND DISHES WITH LOW TIME OF COOKING";
-
-		String wdA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\r\n"
+		String foodG = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX p: <http://www.wikidata.org/prop/>\r\n" + "PREFIX wd: <http://www.wikidata.org/entity/>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n" + "\r\n"
-				+ "SELECT ?wdLabel ?td ?td2 \r\n" + "WHERE \r\n" + "{" + "  ?city rdfs:label ?wdLabel .\r\n"
-				+ "  FILTER (lang(?wdLabel) = 'es')\r\n" + "  ?city wdt:P31 wd:Q515 .\r\n"
-				+ "  ?city f:type (wdt:P1082 fs:High ?td) .\r\n" + "  ?city f:type (wdt:P2046 fs:High ?td2) .\r\n"
-				+ "  ?city wdt:P17 wd:Q29 .\r\n" + "  FILTER(f:OR_PROD(?td,?td2)>=0.7)\r\n" + "}\n"
-				+ "# CITIES OF SPAIN WITH HIGH POPULARION OR HIGH AREA ";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?u " 
+				+ "WHERE {\r\n"
+				+ "?u rdf:type fd:food .\r\n" 
+				+ "?u fd:cooked fd:raw .\r\n" 
+				+ "?u fd:time ?t .\r\n"
+				+ "MINUS {?u fd:made_from fd:milk}\r\n" 
+				+ "FILTER(?t >= 60)\r\n" + "}";
 
-		String wdB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\r\n"
+		 
+		String foodH = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX p: <http://www.wikidata.org/prop/>\r\n" + "PREFIX wd: <http://www.wikidata.org/entity/>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT ?wdLabel ?td \r\n" + "WHERE\r\n" + "{" + "   ?country wdt:P31 wd:Q6256 .\r\n"
-				+ "   ?country f:type  (wdt:P1082 fs:High ?td) .\r\n" + "   ?country rdfs:label ?wdLabel .\r\n"
-				+ "   FILTER (lang(?wdLabel) = 'en')\r\n" + "   FILTER(?td>=0.8)\r\n" + "}\n"
-				+ "# COUNTRIES WITH HIGH POPULATION";
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?m\r\n" 
+				+ "WHERE\r\n" 
+				+ "{\r\n"
+				+ "?m rdf:type fd:menu .\r\n" 
+				+ "?m fd:price ?p\r\n" 
+				+ "FILTER(?p>=10) ." 
+				+ "FILTER NOT EXISTS\r\n"
+				+ "{\r\n" 
+				+ "SELECT ?m ?d ?t ?ni WHERE { ?m fd:dish ?d . ?d fd:time ?t .\r\n" 
+				+ "FILTER(?t >60) .\r\n"
+				+ "{SELECT ?d (count(*) as ?ni) WHERE { ?d fd:made_from ?i}\r\n" 
+				+ "GROUP BY ?d\r\n" 
+				+ "}\r\n"
+				+ "FILTER(?ni <= 2)\r\n" 
+				+ "}" + "}" + "}";
 
-		String dbpA = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\r\n" + "PREFIX dbp: <http://dbpedia.org/property/>\r\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\r\n" + "PREFIX f: <http://www.fuzzy.org#>\r\n"
-				+ "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				// + "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\r\n"
-				+ "SELECT  ?teatre ?od ?scap ?cap " + "WHERE { \r\n" + "      ?teatre rdf:type dbo:Theatre .\r\n"
-				+ "      ?teatre dbo:openingDate ?od .\r\n"
-				+ "      ?teatre f:type (dbo:seatingCapacity fs:High ?cap) .\r\n"
-				+ "      ?teatre dbo:seatingCapacity ?scap .\r\n" + "      ?teatre dbo:city dbr:New_York_City .\r\n"
-				+ "FILTER(?cap >= 0.8) .\r\n" + "FILTER(fs:SET(year(?od) >=1920))\r\n" + "}\n"
-				+ "# THEATRES WITH THE HIGHEST CAPACITY AMONG BUILT AFTER 1920";
-
-		String dbpB = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\r\n" + "PREFIX dbp: <http://dbpedia.org/property/>\r\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\r\n" + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\r\n"
-				// + "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "SELECT  ?city_name ?pop ?area \r\n" + "WHERE {\r\n" + "    ?city rdf:type dbo:City ;\r\n"
-				+ "    foaf:name ?city_name ;\r\n" + "    dbo:country dbr:Canada ;\r\n"
-				+ "    f:type (dbp:populationTotal fs:High ?pop) ;\r\n"
-				+ "    f:type (dbo:areaTotal fs:Low ?area) .\r\n" + "    FILTER(f:AND_PROD(?pop,?area)>=0.7) " + "}\n"
-				+ "# CITIES OF CANADA WITH HIGH POPULATION AND LOW AREA";
-
-		String dbpC = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT ?actor ?ch ?nch \r\n" + "WHERE {\r\n"
-				+ "   ?actor rdf:type <http://dbpedia.org/class/yago/WikicatActors> .\r\n"
-				+ "   ?actor dbo:birthPlace ?place .\r\n" + "   ?actor f:type (dbp:children fs:High ?ch) .\r\n"
-				+ "   ?actor dbp:children ?nch .\r\n" + "   ?place dbo:country dbr:Spain .\r\n"
-				+ "   FILTER(?ch >= 0.7)\r\n" + "}\n" + "# ACTORS OF SPAIN WITH A HIGH NUMBER OF CHILDREN";
-
-		String dbpD = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				// + "PREFIX dbc: <http://dbpedia.org/resource/Category>\n"
-				// + "PREFIX dct: <http://purl.org/dc/terms/subject>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT ?team ?player ?cap\r\n" + "WHERE {\r\n" + "   ?team rdf:type dbo:SoccerClub .\r\n"
-				+ "   ?player f:type (dbo:height fs:High ?cap) .\r\n" + "   ?player dbo:team ?team  .\r\n"
-				+ "   ?player dbo:birthPlace ?bp .\r\n" + "   ?bp dbo:country dbr:Spain .\r\n"
-				+ "   ?team <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Premier_League_clubs> .\r\n"
-				+ "   ?player <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:La_Liga_players> .\r\n"
-				+ "   FILTER(?cap >= 0.8)\r\n" + "}\n"
-				+ "# THE TALLEST PLAYERS OF THE PREMIER LEAGUE WHO PLAYED ALSO IN LA LIGA ";
-
-		String dbpE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				// + "PREFIX dbc: <http://dbpedia.org/resource/Category>\n"
-				// + "PREFIX dct: <http://purl.org/dc/terms/subject>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT  ?journal ?fac  \r\n" + "WHERE { \r\n"
-				+ "        ?journal a <http://dbpedia.org/ontology/AcademicJournal> . \r\n"
-				+ "        ?journal f:type (dbo:impactFactor fs:High ?fac) .	\r\n"
-				+ "        ?journal dbo:academicDiscipline <http://dbpedia.org/resource/Computer_science>\r\n"
-				+ "        FILTER(?fac >= 0.5)\r\n" + "} \r\n" + "# COMPUTER SCIENCE JOURNALS WITH THE HIGHEST IMPACT";
-
-		String dbpF = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				// + "PREFIX dbc: <http://dbpedia.org/resource/Category>\n"
-				// + "PREFIX dct: <http://purl.org/dc/terms/subject>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT ?plant ?vc ?fiber ?prot \r\n" + "WHERE {\r\n" + "        ?plant rdf:type dbo:Plant . \r\n"
-				+ "        ?plant f:type (dbp:protein fs:High ?prot) .	\r\n"
-				+ "        ?plant f:type (dbp:vitcMg fs:High ?vc) .	\r\n"
-				+ "        ?plant f:type (dbp:fiber fs:High ?fiber) .	\r\n"
-				+ "        FILTER(f:OR_GOD(?vc,f:OR_GOD(?fiber,?prot))>=0.7)\r\n" + "}\r\n"
-				+ "# PLANTS WITH HIGH LEVEL OF PROTEINS OR FIBER OR VITAMINE C";
-
-		String dbpG = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				// + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "SELECT *\r\n" + "WHERE {\r\n" + "{\r\n" + "SELECT ?community (f:QUANT(?pu>=0.5) as ?pop)\r\n "
-				+ "  WHERE\r\n" + "     {\r\n" + "       ?community dbo:type dbr:Autonomous_communities_of_Spain .\r\n"
-				+ "       ?p dbo:subdivision ?community .\r\n"
-				+ "       ?p f:type (dbo:populationUrban fs:High ?pu) .\r\n" + "     }\r\n" + "  GROUP BY ?community\n"
-				+ "}\r\n" + "FILTER (?pop >= 0.7)\n" + "}\r\n"
-				+ "# THE AUTONOMOUS COMMUNITY OF SPAIN IN WICH MOST OF CITIES HAVE A LARGE POPULATION";
-
-		String dbpH = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX dbo: <http://dbpedia.org/ontology/>\n" + "PREFIX dbp: <http://dbpedia.org/property/>\n"
-				+ "PREFIX dbr: <http://dbpedia.org/resource/>\n"
-				// + "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX fs: <http://www.fuzzysets.org#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n" + "SELECT * \n" + "WHERE {\n" + "{\n"
-				+ "SELECT ?actor (f:HIGH() as ?movies)\r\n WHERE\r\n" + "     {\r\n"
-				+ "     ?actor rdf:type <http://dbpedia.org/class/yago/WikicatActors> .\r\n"
-				+ "     ?actor dbo:birthPlace ?p .\r\n" + "     ?p dbo:country dbr:Spain .\r\n"
-				+ "     ?movie dbp:starring ?actor .\r\n" + "     }\r\n " + "GROUP BY ?actor\r\n" + "}\r\n "
-				+ "FILTER (?movies>=0.7)}\r\n" + "# ACTORS OF SPAIN STARRING A HIGH NUMBER OF MOVIES";
-
-//		$app->get('/youtubeVideoSearch/q/{q}', 'youtubeVideoSearch');
-//		$app->get('/youtubeChannelSearch/q/{q}', 'youtubeChannelSearch');
-//		$app->get('/youtubePlaylistSearch/q/{q}', 'youtubePlaylistSearch');
-//		$app->get('/twitterSearchTweets/q/{q}', 'twitterSearchTweets');
-//		$app->get('/twitterRetweetsID/id/{id}', 'twitterRetweetsID');
-//		$app->get('/twitterRetweetersID/id/{id}', 'twitterRetweetersID');
-//		$app->get('/twitterUserTimeLine/screen_name/{screen_name}', 'twitterUserTimeLine');
-//		$app->get('/twitterShowUser/screen_name/{screen_name}', 'twitterShowUser');
-//		$app->get('/twitterShowUser/user_id/{user_id}', 'twitterShowUserID');
-//		$app->get('/twitterFollowersID/screen_name/{screen_name}', 'twitterFollowersID');
-//		$app->get('/twitterFollowersList/screen_name/{screen_name}', 'twitterFollowersList');
-//		$app->get('/twitterFavoritesList/screen_name/{screen_name}', 'twitterFavoritesList');
-//		$app->get('/twitterFriendsID/screen_name/{screen_name}', 'twitterFriendsID');
-//		$app->get('/twitterFriendsList/screen_name/{screen_name}', 'twitterFriendsList');
-//		$app->get('/twitterSearchUser/q/{q}', 'twitterSearchUser');
-//		$app->get('/tmdbSearchMovies/q/{q}', 'tmdbSearchMovies');
-//		$app->get('/tmdbSearchPeople/q/{q}', 'tmdbSearchPeople');
-//		$app->get('/tmdbMovieID/movie_id/{movie_id}', 'tmdbMovieID');
-//		$app->get('/tmdbPersonID/person_id/{person_id}', 'tmdbPersonID');
-//		$app->get('/tmdbMovies/option/{option}', 'tmdbMovies');
-//		$app->get('/tmdbPeople/option/{option}', 'tmdbPeople');
+		String foodI = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
+				+ "PREFIX fd:<http://www.semanticweb.org/food#>\r\n" 
+				+ "SELECT ?m WHERE {\r\n"
+				+ "{?m fd:cooked fd:raw }\r\n" 
+				+ "UNION {\r\n" 
+				+ "{?m fd:cooked fd:roast }\r\n" 
+				+ "UNION\r\n"
+				+ "{?m fd:cooked fd:bake } } }";
 
 		AceEditor editorP = new AceEditor();
 		editorP.setHeight("300px");
 		editorP.setWidth("100%");
 		editorP.setFontSize(18);
-		editorP.setMode(AceMode.sparql);
+		editorP.setMode(AceMode.prolog);
 		editorP.setTheme(AceTheme.eclipse);
 		editorP.setUseWorker(true);
 		editorP.setReadOnly(true);
@@ -707,622 +358,156 @@ public class MainView extends VerticalLayout {
 		Grid<HashMap<String, Term>> answers = new Grid<HashMap<String, Term>>();
 		answers.setWidth("100%");
 		answers.setHeight("100%");
-		// CAMBIAR
 		answers.setVisible(true);
 
-		radioGroup.addValueChangeListener(event -> {
-			if (radioGroup.getValue() == "DBPEDIA") {
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				lfile.setVisible(false);
-				ds.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (radioGroup.getValue() == "WIKIDATA") {
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				lfile.setVisible(false);
-				ds.setVisible(false);
-				fuzzy = true;
-				service = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
-			} else {
-				dt.setVisible(true);
-				tabs.setVisible(true);
-				lfile.setVisible(true);
-				ds.setVisible(true);
-
-			}
-		});
+		 
 
 		download.addClickListener(event -> {
 			if (radioGroup.getValue() == "RDF/XML") {
 				load_rdf(file.getValue());
 				show_rdf();
-			} else if (radioGroup.getValue() == "JSON") {
-				load_json(file.getValue());
-				show_rdf();
-			} else if (radioGroup.getValue() == "WIKIDATA") {
-			} else if (radioGroup.getValue() == "DBPEDIA") {
 			} else {
 				load_ttl(file.getValue());
 				show_rdf();
 			}
 
-			// CAMBIAR
-			// answers.setVisible(false);
-			// editorP.setVisible(false);
-			// cv.setVisible(false);
 		});
 
-		ldataset_fuzzy.setWidth("100%");
-		ldataset_fuzzy.setHeight("200pt");
-		ldataset_crisp.setWidth("100%");
-		ldataset_crisp.setHeight("200pt");
+		 
+		ldataset.setWidth("100%");
+		ldataset.setHeight("200pt");
+		dataset.setWidth("100%");
+		dataset.setHeight("100%");
+		dataset.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 
-		dataset_fuzzy.setWidth("100%");
-		dataset_fuzzy.setHeight("100%");
-		dataset_fuzzy.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-
-		dataset_crisp.setWidth("100%");
-		dataset_crisp.setHeight("100%");
-		dataset_crisp.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-
-		file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+		file.setValue(food);
 
 		load_rdf(file.getValue());
 		show_rdf();
-		editor.setValue(basicA);
+		editor.setValue(foodA);
 
-		// NEW
+	
 		MenuBar menuBar = new MenuBar();
 		menuBar.setWidth("100%");
 		ComponentEventListener<ClickEvent<MenuItem>> listener = e -> {
-			if (e.getSource().getText().equals("Quantification A")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			if (e.getSource().getText().equals("Food A")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(quanA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodA);
+				 
 
-			} else if (e.getSource().getText().equals("Quantification B")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			} else if (e.getSource().getText().equals("Food B")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(quanB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodB);
+				 
 
-			} else if (e.getSource().getText().equals("Quantification C")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			} else if (e.getSource().getText().equals("Food C")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(quanC);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodC);
+				 
 
-			} else if (e.getSource().getText().equals("Quantification D")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			} else if (e.getSource().getText().equals("Food D")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(quanD);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodD);
+				 
 
-			} else if (e.getSource().getText().equals("Aggregation A")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			} else if (e.getSource().getText().equals("Food E")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(aggA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodE);
+				 
 
-			} else if (e.getSource().getText().equals("Aggregation B")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
+			} else if (e.getSource().getText().equals("Food F")) {
+				file.setValue(food);
 				radioGroup.setValue("RDF/XML");
 
 				cv.setVisible(false);
 				load_rdf(file.getValue());
 				show_rdf();
-				editor.setValue(aggB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
+				editor.setValue(foodF);
+				 
 
-			} else if (e.getSource().getText().equals("Aggregation C")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggC);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregartion D")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggD);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation E")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggE);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation F")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggF);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation G")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggG);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation H")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggH);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation I")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggI);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic A")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/movies-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Aggregation J")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(aggJ);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic B")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic C")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicC);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic D")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicD);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic E")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicE);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Basic F")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/hotels-fuzzy.rdf");
-				radioGroup.setValue("RDF/XML");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(basicF);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-
-			} else if (e.getSource().getText().equals("Twitter A")) {
-				file.setValue(
-						"https://minerva.ual.es/api.social/twitterSearchTweets/q/Ukrania&option=hashtag&count=30");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(twA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Twitter B")) {
-				file.setValue("https://minerva.ual.es/api.social/twitterSearchUser/q/España");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(twB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Twitter C")) {
-				file.setValue("https://minerva.ual.es/api.social//twitterUserTimeLine/screen_name/bbcmundo");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(twC);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Youtube A")) {
-				file.setValue("https://minerva.ual.es/api.social/youtubeVideoSearch/q/Messi");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(ytA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Youtube B")) {
-				file.setValue("https://minerva.ual.es/api.social/youtubeChannelSearch/q/Messi");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(ytB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("TMDB A")) {
-				file.setValue("https://minerva.ual.es/api.social/tmdbSearchMovies/q/Alien");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(tmdbA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("TMDB B")) {
-				file.setValue("https://minerva.ual.es/api.social/tmdbSearchPeople/q/Peter");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(tmdbB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Linked Data A")) {
-				file.setValue("https://datos.unican.es/docencia/3223/asignaturas-de-master-2022-2023.json");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(ldA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Linked Data B")) {
-				file.setValue("https://do.diba.cat/api/dataset/museus/format/json");
-				radioGroup.setValue("JSON");
-
-				cv.setVisible(false);
-				load_json(file.getValue());
-				show_rdf();
-				editor.setValue(tdB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Ontologies C")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/food.owl");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(owlC);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Ontologies B")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/course.owl");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(owlB);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Ontologies A")) {
-				file.setValue("https://minerva.ual.es/fsafulldata/social.owl");
-
-				cv.setVisible(false);
-				load_rdf(file.getValue());
-				show_rdf();
-				editor.setValue(owlA);
-				// answers.setVisible(false);
-				// editorP.setVisible(false);
-			} else if (e.getSource().getText().equals("Wikidata A")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("WIKIDATA");
-				editor.setValue(wdA);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
-			} else if (e.getSource().getText().equals("Wikidata B")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("WIKIDATA");
-				editor.setValue(wdB);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
-			} else if (e.getSource().getText().equals("DBpedia A")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpA);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia B")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpB);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia C")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpC);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia D")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpD);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia E")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpE);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia F")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpF);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia G")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpG);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
-			} else if (e.getSource().getText().equals("DBpedia H")) {
-				file.setValue("");
-				autocompletion();
-
-				cv.setVisible(false);
-				radioGroup.setValue("DBPEDIA");
-				editor.setValue(dbpH);
-				answers.setVisible(false);
-				editorP.setVisible(false);
-				dt.setVisible(false);
-				tabs.setVisible(false);
-				fuzzy = true;
-				service = "https://dbpedia.org/sparql/";
 			}
+		 else if (e.getSource().getText().equals("Food G")) {
+			file.setValue(food);
+			radioGroup.setValue("RDF/XML");
+
+			cv.setVisible(false);
+			load_rdf(file.getValue());
+			show_rdf();
+			editor.setValue(foodG);
+			 
+
+		
+	} else if (e.getSource().getText().equals("Food H")) {
+		file.setValue(food);
+		radioGroup.setValue("RDF/XML");
+
+		cv.setVisible(false);
+		load_rdf(file.getValue());
+		show_rdf();
+		editor.setValue(foodH);
+		 
+
+	
+} else if (e.getSource().getText().equals("Food I")) {
+	file.setValue(food);
+	radioGroup.setValue("RDF/XML");
+
+	cv.setVisible(false);
+	load_rdf(file.getValue());
+	show_rdf();
+	editor.setValue(foodI);
+	 
+
+}
 
 		}
 
 		;
 
-		MenuItem basic = menuBar.addItem("Basic", listener);
+		MenuItem basic = menuBar.addItem("Food Examples", listener);
 		SubMenu basicSubMenu = basic.getSubMenu();
-		basicSubMenu.addItem("Basic A", listener);
-		basicSubMenu.addItem("Basic B", listener);
-		basicSubMenu.addItem("Basic C", listener);
-		basicSubMenu.addItem("Basic D", listener);
-		basicSubMenu.addItem("Basic E", listener);
-		basicSubMenu.addItem("Basic F", listener);
-
-		MenuItem agg = menuBar.addItem("Aggregation", listener);
-		SubMenu aggSubMenu = agg.getSubMenu();
-		aggSubMenu.addItem("Aggregation A", listener);
-		aggSubMenu.addItem("Aggregation B", listener);
-		aggSubMenu.addItem("Aggregation C", listener);
-		aggSubMenu.addItem("Aggregation D", listener);
-		aggSubMenu.addItem("Aggregation E", listener);
-		aggSubMenu.addItem("Aggregation F", listener);
-		aggSubMenu.addItem("Aggregation G", listener);
-		aggSubMenu.addItem("Aggregation H", listener);
-		aggSubMenu.addItem("Aggregation I", listener);
-		aggSubMenu.addItem("Aggregation J", listener);
-
-		MenuItem quan = menuBar.addItem("Quantification", listener);
-		SubMenu quanSubMenu = quan.getSubMenu();
-		quanSubMenu.addItem("Quantification A", listener);
-		quanSubMenu.addItem("Quantification B", listener);
-		quanSubMenu.addItem("Quantification C", listener);
-		quanSubMenu.addItem("Quantification D", listener);
-
-		MenuItem social = menuBar.addItem("Social Networks", listener);
-		SubMenu socialSubMenu = social.getSubMenu();
-		socialSubMenu.addItem("Twitter A", listener);
-		socialSubMenu.addItem("Twitter B", listener);
-		socialSubMenu.addItem("Twitter C", listener);
-		socialSubMenu.addItem("Youtube A", listener);
-		socialSubMenu.addItem("Youtube B", listener);
-		socialSubMenu.addItem("TMDB A", listener);
-		socialSubMenu.addItem("TMDB B", listener);
-
-		MenuItem ld = menuBar.addItem("Linked Data", listener);
-		SubMenu ldSubMenu = ld.getSubMenu();
-		ldSubMenu.addItem("Linked Data A", listener);
-		ldSubMenu.addItem("Linked Data B", listener);
-
-		MenuItem ont = menuBar.addItem("Ontologies", listener);
-		SubMenu ontSubMenu = ont.getSubMenu();
-		ontSubMenu.addItem("Ontologies A", listener);
-		ontSubMenu.addItem("Ontologies B", listener);
-		ontSubMenu.addItem("Ontologies C", listener);
-
-		MenuItem dbp = menuBar.addItem("DBpedia", listener);
-		SubMenu dbpSubMenu = dbp.getSubMenu();
-		dbpSubMenu.addItem("DBpedia A", listener);
-		dbpSubMenu.addItem("DBpedia B", listener);
-		dbpSubMenu.addItem("DBpedia C", listener);
-		dbpSubMenu.addItem("DBpedia D", listener);
-		dbpSubMenu.addItem("DBpedia E", listener);
-		dbpSubMenu.addItem("DBpedia F", listener);
-		dbpSubMenu.addItem("DBpedia G", listener);
-		dbpSubMenu.addItem("DBpedia H", listener);
-
-		MenuItem wd = menuBar.addItem("Wikidata", listener);
-		SubMenu wdSubMenu = wd.getSubMenu();
-		wdSubMenu.addItem("Wikidata A", listener);
-		wdSubMenu.addItem("Wikidata B", listener);
-
-		//FsaSPARQL fs = new FsaSPARQL();
+		basicSubMenu.addItem("Food A", listener);
+		basicSubMenu.addItem("Food B", listener);
+		basicSubMenu.addItem("Food C", listener);
+		basicSubMenu.addItem("Food D", listener);
+		basicSubMenu.addItem("Food E", listener);
+		basicSubMenu.addItem("Food F", listener);
+		basicSubMenu.addItem("Food G", listener);
+		basicSubMenu.addItem("Food H", listener);
+		basicSubMenu.addItem("Food I", listener);
+		 
+		 
+		 
 
 		VerticalLayout lanswers = new VerticalLayout();
 		lanswers.setWidth("100%");
 		lanswers.setHeight("200pt");
-		// CAMBIAR
+		 
 		lanswers.setVisible(true);
 
 		run.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
@@ -1331,13 +516,8 @@ public class MainView extends VerticalLayout {
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
 				step = 0; // step++;
-				pSPARQL ps = new pSPARQL();
-
-				//FsaSPARQL fsa = new FsaSPARQL();
-				//String s = fsa.FSAtoSPARQL(editor.getValue(), false);
-				
+				pSPARQL ps = new pSPARQL();				
 				String s = editor.getValue();
-
 				List<List<String>> rules = null;
 				rules = ps.SPARQLtoProlog(s, step);
 
@@ -1353,12 +533,7 @@ public class MainView extends VerticalLayout {
 
 				}
 
-				/*
-				 * PARA PODER ACTUALIZAR EL EDITOR String content = editorOntology.getValue();
-				 * String path = file.getValue(); try { Files.write( Paths.get(path),
-				 * content.getBytes(), StandardOpenOption.CREATE); } catch (IOException e) { //
-				 * TODO Auto-generated catch block e.printStackTrace(); }
-				 */
+				 
 
 				String t1 = "use_module(library(semweb/rdf11))";
 				org.jpl7.Query q1 = new org.jpl7.Query(t1);
@@ -1406,7 +581,7 @@ public class MainView extends VerticalLayout {
 							+ ").\n";
 				}
 
-				editorP.setValue(pp + '\n' + rdfs);
+				editorP.setValue(pp);
 
 				String prule2 = "";
 				System.out.println("Number of rules: " + rules.size());
@@ -1590,37 +765,7 @@ public class MainView extends VerticalLayout {
 	public void autocompletion() {
 
 		List<String> l = new ArrayList<String>();
-		l.add("f:type");
-		l.add("f:HIGH()");
-		l.add("f:MEDIUM()");
-		l.add("f:LOW()");
-		l.add("fs:High");
-		l.add("fs:Medium");
-		l.add("fs:Low");
-		l.add("rdf:type");
-		l.add("f:AT_LEAST");
-		l.add("f:AT_MOST");
-		l.add("f:CLOSE_TO");
-		l.add("f:MORE_OR_LESS");
-		l.add("f:VERY");
-		l.add("f:AND_PROD");
-		l.add("f:OR_PROD");
-		l.add("f:AND_LUK");
-		l.add("f:OR_LUK");
-		l.add("f:AND_GOD");
-		l.add("f:OR_GOD");
-		l.add("f:MEAN");
-		l.add("f:WSUM");
-		l.add("f:WMAX");
-		l.add("f:WMIN");
-		l.add("f:FSUM");
-		l.add("f:FMAX");
-		l.add("f:FMIN");
-		l.add("f:FCOUNT");
-		l.add("f:PCOUNT");
-		l.add("f:QUANT");
-		l.add("f:FAVG");
-		l.add("f:WEIGHT");
+		 
 		l.add("SELECT");
 		l.add("WHERE");
 		l.add("FILTER");
@@ -1636,37 +781,7 @@ public class MainView extends VerticalLayout {
 	public void show_rdf() {
 
 		List<String> l = new ArrayList<String>();
-		l.add("f:type");
-		l.add("f:HIGH()");
-		l.add("f:MEDIUM()");
-		l.add("f:LOW()");
-		l.add("fs:High");
-		l.add("fs:Medium");
-		l.add("fs:Low");
-		l.add("rdf:type");
-		l.add("f:AT_LEAST");
-		l.add("f:AT_MOST");
-		l.add("f:CLOSE_TO");
-		l.add("f:MORE_OR_LESS");
-		l.add("f:VERY");
-		l.add("f:AND_PROD");
-		l.add("f:OR_PROD");
-		l.add("f:AND_LUK");
-		l.add("f:OR_LUK");
-		l.add("f:AND_GOD");
-		l.add("f:OR_GOD");
-		l.add("f:MEAN");
-		l.add("f:WSUM");
-		l.add("f:WMAX");
-		l.add("f:WMIN");
-		l.add("f:FSUM");
-		l.add("f:FMAX");
-		l.add("f:FMIN");
-		l.add("f:FCOUNT");
-		l.add("f:PCOUNT");
-		l.add("f:QUANT");
-		l.add("f:FAVG");
-		l.add("f:WEIGHT");
+		 
 		l.add("SELECT");
 		l.add("WHERE");
 		l.add("FILTER");
@@ -1686,44 +801,11 @@ public class MainView extends VerticalLayout {
 			}
 		}
 
-		query_load = query_load + "PREFIX f: <http://www.fuzzy.org#>\r\n" + "PREFIX json: <http://www.json.org#>\r\n";
-
-		query_load = query_load + "SELECT ?s ?p ?o\r\n WHERE\r\n {\r\n ?s ?p ?o\r\n }\r\n";
+		 query_load = query_load + "SELECT ?s ?p ?o\r\n WHERE\r\n {\r\n ?s ?p ?o\r\n }\r\n";
 
 		editor.setValue(query_load);
 
-		// PONER LOS CASOS DEGENERADOS!!!
-
-		String fuzzification = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n" + "PREFIX json: <http://www.json.org#>\r\n"
-				+ "PREFIX f: <http://www.fuzzy.org#>\r\n" + "SELECT ?Subject ?Property ?Object ?Low ?Medium ?High "
-				+ "WHERE { ?Subject ?Property ?Object . "
-				+ "{SELECT ?Property (MIN(xsd:float(?Object)) AS ?Min) (MAX(xsd:float(?Object)) AS ?Max) (AVG(xsd:float(?Object)) AS ?Avg)  "
-				+ "WHERE { ?Subject ?Property ?Object . \n"
-				+ "FILTER(!STRSTARTS(STR(?Subject), 'http://www.fuzzy.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Property), 'http://www.fuzzy.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Object), 'http://www.fuzzy.org'))"
-				+ "FILTER(!STRSTARTS(STR(?Subject), 'http://www.w3.org')) ."
-				+ "FILTER(!STRSTARTS(STR(?Property), 'http://www.w3.org')) ."
-				// + "FILTER(!STRSTARTS(STR(?Object), 'http://www.w3.org'))"
-				+ " }" + " GROUP BY ?Property} ."
-				+ "BIND(if(xsd:float(?Object)<=?Avg,(xsd:float(?Object)-?Min)/(?Avg-?Min),(?Max-xsd:float(?Object))/(?Max-?Avg)) AS ?Medium) ."
-				+ "BIND((?Max-xsd:float(?Object))/(?Max-?Min) AS ?Low) ."
-				+ "BIND((xsd:float(?Object)-?Min)/(?Max-?Min) AS ?High) ." + "}" + "ORDER BY ?Property";
-
-		String fuzzy = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n" + "PREFIX f: <http://www.fuzzy.org#>\r\n"
-				+ "PREFIX json: <http://www.json.org#>\r\n"
-				+ "SELECT ?Individual ?Property ?TruthDegree ?FuzzySet ?Element  WHERE { {" + "?Individual f:type ?s . "
-				+ "?s rdf:type ?FuzzySet . " + "?s f:onProperty ?Property . " + "?s f:truth ?TruthDegree ."
-				+ "FILTER(!STRSTARTS(STR(?FuzzySet), 'http://www.w3.org')) } "
-				+ "UNION {?Individual ?Property ?bn . ?bn f:item ?Element . ?bn f:truth ?TruthDegree }"
-
-				+ "} " + "ORDER BY ?Individual";
+		 
 
 		String crisp = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
@@ -1738,116 +820,22 @@ public class MainView extends VerticalLayout {
 				+ "FILTER(!STRSTARTS(STR(?Property), 'http://www.w3.org')) ."
 				+ "FILTER(!STRSTARTS(STR(?Object), 'http://www.w3.org'))" + " }" + " ORDER BY ?Property";
 
-		Query query_test = QueryFactory.create(fuzzy);
-		ResultSet result_test = (ResultSet) QueryExecutionFactory.create(query_test, model).execSelect();
-
-		if (result_test.hasNext()) {
-		} else {
-			Query query_fuzzification = QueryFactory.create(fuzzification);
-			ResultSet result_fuzzification = (ResultSet) QueryExecutionFactory.create(query_fuzzification, model)
-					.execSelect();
-			while (result_fuzzification.hasNext()) {
-				QuerySolution solution = result_fuzzification.next();
-				if (solution.getLiteral("Low") == null & solution.getLiteral("Medium") == null
-						& solution.getLiteral("High") == null) {
-				} else {
-
-					model.add(solution.getResource("Subject"),
-							ResourceFactory.createProperty("http://www.fuzzy.org#type"),
-							ResourceFactory.createResource(solution.getResource("Subject") + "Low"
-									+ solution.getResource("Property").getLocalName()));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Low"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-							ResourceFactory.createResource("http://www.fuzzysets.org#Low"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Low"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#onProperty"),
-							solution.getResource("Property"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Low"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#truth"), solution.getLiteral("Low"));
-					model.add(solution.getResource("Subject"),
-							ResourceFactory.createProperty("http://www.fuzzy.org#type"),
-							ResourceFactory.createResource(solution.getResource("Subject") + "Medium"
-									+ solution.getResource("Property").getLocalName()));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Medium"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-							ResourceFactory.createResource("http://www.fuzzysets.org#Medium"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Medium"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#onProperty"),
-							solution.getResource("Property"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "Medium"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#truth"),
-							solution.getLiteral("Medium"));
-					model.add(solution.getResource("Subject"),
-							ResourceFactory.createProperty("http://www.fuzzy.org#type"),
-							ResourceFactory.createResource(solution.getResource("Subject") + "High"
-									+ solution.getResource("Property").getLocalName()));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "High"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-							ResourceFactory.createResource("http://www.fuzzysets.org#High"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "High"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#onProperty"),
-							solution.getResource("Property"));
-					model.add(
-							ResourceFactory.createResource(solution.getResource("Subject") + "High"
-									+ solution.getResource("Property").getLocalName()),
-							ResourceFactory.createProperty("http://www.fuzzy.org#truth"), solution.getLiteral("High"));
-				}
-
-			}
-
-		}
+		 
 
 		List<HashMap<String, RDFNode>> rows_dataset_fuzzy = new ArrayList<>();
 		List<HashMap<String, RDFNode>> rows_dataset_crisp = new ArrayList<>();
 
-		Query query_fuzzy = QueryFactory.create(fuzzy);
+		 
 		Query query_crisp = QueryFactory.create(crisp);
-		ResultSet result_fuzzy = (ResultSet) QueryExecutionFactory.create(query_fuzzy, model).execSelect();
+		
 		ResultSet result_crisp = (ResultSet) QueryExecutionFactory.create(query_crisp, model).execSelect();
-		dataset_fuzzy.removeAllColumns();
-		dataset_crisp.removeAllColumns();
-		List<String> variables_fuzzy = result_fuzzy.getResultVars();
+		 
+		dataset.removeAllColumns();
+		 
 		List<String> variables_crisp = result_crisp.getResultVars();
 		rows_dataset_fuzzy.clear();
 		rows_dataset_crisp.clear();
-		while (result_fuzzy.hasNext()) {
-			QuerySolution solution = result_fuzzy.next();
-			LinkedHashMap<String, RDFNode> sol = new LinkedHashMap<String, RDFNode>();
-			for (String vari : variables_fuzzy) {
-
-				if (solution.get(vari) == null) {
-					sol.put(vari, ResourceFactory.createResource(" "));
-				} else {
-					sol.put(vari, solution.get(vari));
-					if (solution.get(vari).isURIResource()) {
-						if (model.getNsURIPrefix(solution.get(vari).asNode().getNameSpace()) == null) {
-							l.add(solution.get(vari).asNode().getLocalName());
-						} else {
-							l.add(model.getNsURIPrefix(solution.get(vari).asNode().getNameSpace()) + ":"
-									+ solution.get(vari).asNode().getLocalName());
-						}
-					}
-				}
-
-			}
-			rows_dataset_fuzzy.add(sol);
-		}
+		 
 
 		while (result_crisp.hasNext()) {
 			QuerySolution solution = result_crisp.next();
@@ -1867,34 +855,15 @@ public class MainView extends VerticalLayout {
 			rows_dataset_crisp.add(sol);
 		}
 
-		if (rows_dataset_fuzzy.size() > 0) {
-			ldataset_fuzzy.setVisible(true);
-			dataset_fuzzy.setVisible(true);
-
-			HashMap<String, RDFNode> sr = rows_dataset_fuzzy.get(0);
-			for (Map.Entry<String, RDFNode> entry : sr.entrySet()) {
-				dataset_fuzzy.addColumn(h -> h.get(entry.getKey())).setHeader(entry.getKey()).setAutoWidth(true)
-						.setResizable(true).setSortable(true)
-						.setComparator((x, y) -> isNumeric(x.get(entry.getKey()).toString())
-								& isNumeric(y.get(entry.getKey()).toString())
-										? Float.compare(Float.parseFloat(x.get(entry.getKey()).toString()),
-												Float.parseFloat(y.get(entry.getKey()).toString()))
-										: x.get(entry.getKey()).toString().compareTo(y.get(entry.getKey()).toString()));
-
-			}
-			// show_notification("Successful!", "Fuzzy dataset has been downloaded!");
-		} else {
-			show_notification("Download!", "This fuzzy dataset is empty!");
-		}
-		dataset_fuzzy.setItems(rows_dataset_fuzzy);
+		 
 
 		if (rows_dataset_crisp.size() > 0) {
-			ldataset_crisp.setVisible(true);
-			dataset_crisp.setVisible(true);
+			ldataset.setVisible(true);
+			dataset.setVisible(true);
 
 			HashMap<String, RDFNode> sr = rows_dataset_crisp.get(0);
 			for (Map.Entry<String, RDFNode> entry : sr.entrySet()) {
-				dataset_crisp.addColumn(h -> h.get(entry.getKey())).setHeader(entry.getKey()).setAutoWidth(true)
+				dataset.addColumn(h -> h.get(entry.getKey())).setHeader(entry.getKey()).setAutoWidth(true)
 						.setResizable(true).setSortable(true)
 						.setComparator((x, y) -> isNumeric(x.get(entry.getKey()).toString())
 								& isNumeric(y.get(entry.getKey()).toString())
@@ -1906,10 +875,10 @@ public class MainView extends VerticalLayout {
 		} else {
 			show_notification("Downloaded!", "This crisp dataset is empty!");
 		}
-		dataset_crisp.setItems(rows_dataset_crisp);
+		dataset.setItems(rows_dataset_crisp);
 
-		ldataset_fuzzy.add(dataset_fuzzy);
-		ldataset_crisp.add(dataset_crisp);
+		 
+		ldataset.add(dataset);
 		editor.setCustomAutocompletion(l);
 
 		String fileName = "C:/tmp-sparql/" + "model.rdf";
