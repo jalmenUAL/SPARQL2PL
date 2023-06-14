@@ -48,10 +48,7 @@ import org.apache.jena.sparql.syntax.ElementUnion;
 import org.apache.jena.util.FileUtils;
 import org.jpl7.Term;
 
-//UPDATE 14/6/2023
-//VALUES
-
-public class pSPARQL {
+public class pSPARQL2_debugger {
 
 	Integer next = 1;
 	Integer current = 0;
@@ -106,7 +103,7 @@ public class pSPARQL {
 		if (
 
 		query.isConstructType() || query.isDescribeType() || !query.getGraphURIs().isEmpty()
-				|| !query.getNamedGraphURIs().isEmpty()  )
+				|| !query.getNamedGraphURIs().isEmpty())
 
 		{
 			System.out.println("SPARQL expression not supported");
@@ -125,8 +122,8 @@ public class pSPARQL {
 				} else {
 					head = "p" + current + "_" + step;
 				}
-				//head = head + "('" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
-				//		.replace("\r", " ").replaceAll("\\s+", " ") + "')";
+				head = head + "('" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
+						.replace("\r", " ").replaceAll("\\s+", " ") + "')";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -135,8 +132,8 @@ public class pSPARQL {
 					head = "p" + current + "_" + step + "(";
 				}
 
-				//head = head + "'" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
-				//		.replace("\r", " ").replaceAll("\\s+", " ") + "'" + ",";
+				head = head + "'" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
+						.replace("\r", " ").replaceAll("\\s+", " ") + "'" + ",";
 
 				for (String v : varsSub) {
 					head = head + v.toUpperCase() + ",";
@@ -226,8 +223,8 @@ public class pSPARQL {
 					head = "p" + current + "_" + step;
 				}
 
-				//head = head + "('" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
-				//		.replace("\r", " ").replaceAll("\\s+", " ") + "')";
+				head = head + "('" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
+						.replace("\r", " ").replaceAll("\\s+", " ") + "')";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -236,8 +233,8 @@ public class pSPARQL {
 					head = "p" + current + "_" + step + "(";
 				}
 
-				//head = head + "'" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
-				//		.replace("\r", " ").replaceAll("\\s+", " ") + "'" + ",";
+				head = head + "'" + query.toString().substring(query.toString().indexOf("SELECT")).replace("\n", " ")
+						.replace("\r", " ").replaceAll("\\s+", " ") + "'" + ",";
 
 				for (String v : varsSub) {
 					head = head + v.toUpperCase() + ",";
@@ -340,9 +337,9 @@ public class pSPARQL {
 				head = "p" + current + "_" + step;
 			}
 
-			//head = head + "(" + "'GROUPBY','"
-			//		+ query.getQueryPattern().toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "')";
+			head = head + "(" + "'GROUPBY','"
+					+ query.getQueryPattern().toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "')";
 
 		} else {
 			if (current == 0 && step == 0) {
@@ -356,9 +353,9 @@ public class pSPARQL {
 				namehead = namehead + " ?" + v.toLowerCase();
 			}
 			namehead = namehead + " in ";
-			//head = head + "'GROUPBY'," + "'" + namehead
-			//		+ query.getQueryPattern().toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "'" + ",";
+			head = head + "'GROUPBY'," + "'" + namehead
+					+ query.getQueryPattern().toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "'" + ",";
 
 			 
 
@@ -536,8 +533,8 @@ public class pSPARQL {
 			} else {
 				head = "p" + current + "_" + step;
 			}
-			//head = head + "('EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ ")'";
+			head = head + "('EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ ")'";
 
 		} else {
 			if (current == 0 && step == 0) {
@@ -545,8 +542,8 @@ public class pSPARQL {
 			} else {
 				head = "p" + current + "_" + step + "(";
 			}
-			//head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "'" + ",";
+			head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "'" + ",";
 			for (String v : varsOut) {
 				head = head + v.toUpperCase() + ",";
 			}
@@ -617,16 +614,16 @@ public class pSPARQL {
 			} else {
 				head = "p" + current + "_" + step;
 			}
-			//head = head + "('EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ ")'";
+			head = head + "('EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ ")'";
 		} else {
 			if (current == 0 && step == 0) {
 				head = "p" + "(";
 			} else {
 				head = "p" + current + "_" + step + "(";
 			}
-			//head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "'" + ",";
+			head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "'" + ",";
 			for (String v : varsOut) {
 				head = head + v.toUpperCase() + ",";
 			}
@@ -689,8 +686,8 @@ public class pSPARQL {
 				} else {
 					head = "p" + current + "_" + step;
 				}
-				//head = head + "('EXISTS','"
-				//		+ el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
+				head = head + "('EXISTS','"
+						+ el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
 
 			} else {
 				if (current == 0 && step == 0) {
@@ -698,8 +695,8 @@ public class pSPARQL {
 				} else {
 					head = "p" + current + "_" + step + "(";
 				}
-				//head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-				//		+ "'" + ",";
+				head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+						+ "'" + ",";
 				for (String v : varsOut) {
 					head = head + v.toUpperCase() + ",";
 				}
@@ -760,16 +757,16 @@ public class pSPARQL {
 				} else {
 					head = "p" + current + "_" + step;
 				}
-				//head = head + "('EXISTS','"
-				//		+ el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
+				head = head + "('EXISTS','"
+						+ el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ") + ")'";
 			} else {
 				if (current == 0 && step == 0) {
 					head = "p" + "(";
 				} else {
 					head = "p" + current + "_" + step + "(";
 				}
-				//head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-				//		+ "'" + ",";
+				head = head + "'EXISTS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+						+ "'" + ",";
 				for (String v : varsOut) {
 					head = head + v.toUpperCase() + ",";
 				}
@@ -985,8 +982,8 @@ public class pSPARQL {
 				head = "p" + current + "_" + step;
 			}
 
-			//head = head + "('MINUS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ ")'";
+			head = head + "('MINUS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ ")'";
 
 		} else {
 			 
@@ -996,8 +993,8 @@ public class pSPARQL {
 				head = "p" + current + "_" + step + "(";
 			}
 
-			//head = head + "'MINUS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "'" + ",";
+			head = head + "'MINUS','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "'" + ",";
 
 			for (String v : varsOut) {
 				head = head + v.toUpperCase() + ",";
@@ -1064,8 +1061,8 @@ public class pSPARQL {
 				head = "p" + current + "_" + step;
 			}
 
-			//head = head + "('OPTIONAL','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ ")'";
+			head = head + "('OPTIONAL','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ ")'";
 
 		} else {
 			if (current == 0 && step == 0) {
@@ -1074,8 +1071,8 @@ public class pSPARQL {
 				head = "p" + current + "_" + step + "(";
 			}
 
-			//head = head + "'OPTIONAL','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
-			//		+ "'" + ",";
+			head = head + "'OPTIONAL','" + el.toString().replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ")
+					+ "'" + ",";
 
 			for (String v : varsOut) {
 				head = head + v.toUpperCase() + ",";
@@ -1854,12 +1851,6 @@ public class pSPARQL {
 				+ "{ ?Ind rdf:type sn:User ." 
 				+ "BIND(?Ind as ?Y)} ";
 
-		//NO SOPORTADA
-		String prog10 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
-				+ "SELECT ?user2 ?age WHERE {?user2 sn:age ?age2 . " 
-				+ "FILTER(?age2 > ?age )} ";
 		 
 		String prog11 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" 
@@ -1943,9 +1934,13 @@ public class pSPARQL {
 				+ "SELECT ?Ind WHERE "
 				+ "{ ?Ind rdf:type sn:User . FILTER (?age > 25) }";
 
-		
+		// EXTRA
 
-		
+		String prog21a = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
+				+ "SELECT ?user2 ?age WHERE {?user2 sn:age ?age2 . " 
+				+ "FILTER(?age2 > ?age )} ";
 
 		
 		String prog21 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
@@ -1956,7 +1951,7 @@ public class pSPARQL {
 				+ "{SELECT ?user2 ?age WHERE {?user2 sn:age ?age2 . "
 				+ "FILTER(?age2 > ?age )} }  }";
 
-		//NO SOPORTADA
+		//MIRAR FUNCIONES
 		String prog22 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
@@ -2203,11 +2198,9 @@ public class pSPARQL {
 		String filename = "C:/Users/Administrator/git/SPARQL2PL/sparql2pl/food.owl";
 
 		 
-		pSPARQL ps = new pSPARQL();
+		pSPARQL2_debugger ps = new pSPARQL2_debugger();
 
-		List<List<String>> rules = ps.SPARQLtoProlog(db9, 0);
-		
-		if (!rules.isEmpty()) {
+		List<List<String>> rules = ps.SPARQLtoProlog(db5, 0);
 		System.out.println(rules);
 
 		String pp = "";
@@ -2312,9 +2305,8 @@ public class pSPARQL {
 			System.out.println(solution);
 		}
 		
-         
+        System.out.println(db5);
 		 
 	};
-	}
 
 };
