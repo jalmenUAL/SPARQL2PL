@@ -180,7 +180,7 @@ public class MainView extends VerticalLayout {
 		Label dt = new Label();
 		dt.add(new Html("<b style='font-size:150%; background:black; color:white;'>Dataset</b>"));
 		Label cdt = new Label();
-		cdt.add(new Html("<b style='font-size:100%; background:black; color:white;'>Dataset</b>"));
+		cdt.add(new Html("<b style='font-size:150%; background:black; color:white;'>Dataset</b>"));
 		Label cv = new Label();
 		cv.add(new Html("<b style='font-size:150%; background:black; color:white;'>Prolog encoding</b>"));
 
@@ -342,6 +342,95 @@ public class MainView extends VerticalLayout {
 				+ "{?m fd:cooked fd:roast }\r\n" 
 				+ "UNION\r\n"
 				+ "{?m fd:cooked fd:bake } } }";
+		
+		String socialA = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" 
+				+ "PREFIX f: <http://www.fuzzy.org/>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
+				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" 
+				+ "SELECT ?user WHERE {"
+				+ "?user rdf:type sn:User . "
+				+ "?user sn:age 51 " 
+				+ "} ";
+		
+		String socialB = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
+				+ "SELECT ?user ?user2 WHERE "
+				+ "{" + "?user rdf:type sn:User . ?user sn:friend_of ?user2 }";
+		
+		String socialC = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?NUSER1 ?NUSER2 WHERE {\n" 
+				+ "?USER1 sn:name ?NUSER1 . "
+				+ "?USER2 sn:name ?NUSER2 . \n"
+				+ "?USER1 sn:age ?AU1 . "
+				+ "?USER2 sn:age ?AU2 . " 
+				+ "FILTER(?AU1 > 40 )." 
+				+ "FILTER (?AU2 > 50) }\n";
+		
+		String socialD = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?USER ?EVENT WHERE "
+				+ "{\n" + "?USER rdf:type sn:User .\n" 
+				+ "?USER sn:age ?AGE .\n"
+				+ "FILTER (?AGE > 40) .\n" 
+				+ "?USER sn:attends_to ?EVENT" + "}\n";
+		
+		String socialE = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" 
+				+ "PREFIX f: <http://www.fuzzy.org/>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>"
+				+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>" 
+				+ "SELECT ?Ind ?age ?event WHERE "
+				+ "{  ?Ind sn:age ?age ." 
+				+ "OPTIONAL { SELECT ?Ind ?event WHERE { ?Ind sn:attends_to ?event "
+				+ "OPTIONAL {?Ind rdf:type sn:User} } } " + "} ";
+		
+		String socialF = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?USER WHERE {\n" + "?USER sn:age ?AGE .\n" 
+				+ "FILTER (?AGE > 25) .\n"
+				+ "FILTER NOT EXISTS {SELECT ?USER WHERE {\n" 
+				+ "?USER sn:attends_to ?Event \n" + "}\n" + "}}\n";
+		
+		String socialG = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>" 
+				+ "SELECT ?Ind WHERE "
+				+ "{ ?Ind rdf:type sn:User . "
+				+ "MINUS { ?Ind sn:attends_to ?Event } }";
+		
+		String socialH = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?USER WHERE {\n" 
+				+ "?USER sn:age ?AGE .\n" 
+				+ "FILTER (?AGE > 25) .\n"
+				+ "FILTER NOT EXISTS {SELECT ?AGE WHERE {\n" 
+				+ "?USER2 sn:age ?AGE2 .\n" 
+				+ "FILTER (?AGE < ?AGE2 ) }\n"
+				+ "}}\n";
+		
+		String socialI = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" 
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX sn: <http://www.semanticweb.org/social#>\n"
+				+ "SELECT ?user (count(*) AS ?areg)  \r\n" 
+				+ "WHERE {\r\n" 
+				+ "?conf sn:added_by ?user .\r\n"
+				+ " \r\n" + "}\r\n" 
+				+ "GROUP BY ?user \r\n";
 
 		AceEditor editorP = new AceEditor();
 		editorP.setHeight("300px");
@@ -483,14 +572,108 @@ public class MainView extends VerticalLayout {
 	editor.setValue(foodI);
 	 
 
+} else
+			if (e.getSource().getText().equals("Social A")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialA);
+				 
+
+			} else if (e.getSource().getText().equals("Social B")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialB);
+				 
+
+			} else if (e.getSource().getText().equals("Social C")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialC);
+				 
+
+			} else if (e.getSource().getText().equals("Social D")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialD);
+				 
+
+			} else if (e.getSource().getText().equals("Social E")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialE);
+				 
+
+			} else if (e.getSource().getText().equals("Social F")) {
+				file.setValue(social);
+				radioGroup.setValue("RDF/XML");
+
+				cv.setVisible(false);
+				load_rdf(file.getValue());
+				show_rdf();
+				editor.setValue(socialF);
+				 
+
+			}
+		 else if (e.getSource().getText().equals("Social G")) {
+			file.setValue(social);
+			radioGroup.setValue("RDF/XML");
+
+			cv.setVisible(false);
+			load_rdf(file.getValue());
+			show_rdf();
+			editor.setValue(socialG);
+			 
+
+		
+	} else if (e.getSource().getText().equals("Social H")) {
+		file.setValue(social);
+		radioGroup.setValue("RDF/XML");
+
+		cv.setVisible(false);
+		load_rdf(file.getValue());
+		show_rdf();
+		editor.setValue(socialH);
+		 
+
+	
+} else if (e.getSource().getText().equals("Social I")) {
+	file.setValue(social);
+	radioGroup.setValue("RDF/XML");
+
+	cv.setVisible(false);
+	load_rdf(file.getValue());
+	show_rdf();
+	editor.setValue(socialI);
+	 
+
 }
 
 		}
 
 		;
 
-		MenuItem basic = menuBar.addItem("Food Examples", listener);
-		SubMenu basicSubMenu = basic.getSubMenu();
+		MenuItem food = menuBar.addItem("Food Examples", listener);
+		SubMenu basicSubMenu = food.getSubMenu();
 		basicSubMenu.addItem("Food A", listener);
 		basicSubMenu.addItem("Food B", listener);
 		basicSubMenu.addItem("Food C", listener);
@@ -500,7 +683,17 @@ public class MainView extends VerticalLayout {
 		basicSubMenu.addItem("Food G", listener);
 		basicSubMenu.addItem("Food H", listener);
 		basicSubMenu.addItem("Food I", listener);
-		 
+		MenuItem social = menuBar.addItem("Social Network Examples", listener);
+		SubMenu basicSubMenu2 = social.getSubMenu();
+		basicSubMenu2.addItem("Social A", listener);
+		basicSubMenu2.addItem("Social B", listener);
+		basicSubMenu2.addItem("Social C", listener);
+		basicSubMenu2.addItem("Social D", listener);
+		basicSubMenu2.addItem("Social E", listener);
+		basicSubMenu2.addItem("Social F", listener);
+		basicSubMenu2.addItem("Social G", listener);
+		basicSubMenu2.addItem("Social H", listener);
+		basicSubMenu2.addItem("Social I", listener);
 		 
 		 
 
