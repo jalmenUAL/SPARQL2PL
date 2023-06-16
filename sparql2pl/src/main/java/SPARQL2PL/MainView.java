@@ -88,8 +88,10 @@ public class MainView extends VerticalLayout {
 	TextField file = new TextField();
 	Integer step = 0;
 
-	String food = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\food.owl";
-	String social = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\social.owl";
+	//String food = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\food.owl";
+	//String social = "C:\\Users\\Administrator\\git\\SPARQL2PL\\sparql2pl\\social.owl";
+	String food ="https://minerva.ual.es/sparqlpl/food.owl";
+	String social="https://minerva.ual.es/sparqlpl/social.owl";
 	
 	VerticalLayout ldataset = new VerticalLayout();
 	Grid<HashMap<String, RDFNode>> dataset = new Grid<HashMap<String, RDFNode>>();
@@ -214,6 +216,8 @@ public class MainView extends VerticalLayout {
 		editorO.setShowGutter(false);
 		editorO.setShowPrintMargin(false);
 		editorO.setSofttabs(false);
+		
+		 
 
 		 
 
@@ -756,16 +760,9 @@ public class MainView extends VerticalLayout {
 				System.out.print((q2.hasSolution() ? "" : ""));
 				q2.close();
 
-				String t22 = "rdf(X,Y,Z)";
-				org.jpl7.Query q22 = new org.jpl7.Query(t22);
-				String rdfs = "";
-				Map<String, Term>[] srdfs = q22.allSolutions();
-				q22.close();
+				 
 
-				for (Map<String, Term> solution : srdfs) {
-					rdfs = rdfs + "rdf(" + solution.get("X") + ',' + solution.get("Y") + ',' + solution.get("Z")
-							+ ").\n";
-				}
+				 
 
 				editorP.setValue(pp);
 
@@ -791,6 +788,10 @@ public class MainView extends VerticalLayout {
 						"if(X,Y,Z,T):-!,((X=1^^_)->T=Y;T=Z)",
 						"call_function(X,Y,F,T):-!, X=..[_,TX,TYPE],Y=..[_,TY|_],NE=..[F,TX,TY],TAUX is NE,T=..['^^',TAUX,'http://www.w3.org/2001/XMLSchema#decimal']" };
 
+				 
+				
+				 
+				
 				for (int i = 0; i < ops.length; i++) {
 					String aprule = "asserta((" + ops[i] + "))";
 					org.jpl7.Query q3 = new org.jpl7.Query(aprule);
