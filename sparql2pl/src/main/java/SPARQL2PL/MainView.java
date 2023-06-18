@@ -33,8 +33,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.util.FileUtils;
-import org.jpl7.Atom;
-import org.jpl7.Term;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -84,6 +82,8 @@ import de.f0rce.ace.enums.AceTheme;
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends VerticalLayout {
+	
+	
 
 	TextField file = new TextField();
 	Integer step = 0;
@@ -145,6 +145,9 @@ public class MainView extends VerticalLayout {
 	}
 
 	public MainView() {
+		
+		 
+
 
 		VaadinSession.getCurrent().setErrorHandler(new CustomErrorHandler());
 
@@ -437,7 +440,8 @@ public class MainView extends VerticalLayout {
 		editorP.setShowGutter(false);
 		editorP.setShowPrintMargin(false);
 		editorP.setSofttabs(false);
-		Grid<HashMap<String, Term>> answers = new Grid<HashMap<String, Term>>();
+		Grid<HashMap<String,  
+		  org.jpl7.Term >> answers = new Grid<HashMap<String, org.jpl7.Term>>();
 		answers.setWidth("100%");
 		answers.setHeight("100%");
 		answers.setVisible(true);
@@ -799,16 +803,16 @@ public class MainView extends VerticalLayout {
 					q3.close();
 				}
 
-				List<HashMap<String, Term>> rows = new ArrayList<>();
+				List<HashMap<String, org.jpl7.Term>> rows = new ArrayList<>();
 
 				answers.removeAllColumns();
 
-				Atom t = new Atom("Null");
+				org.jpl7.Atom t = new org.jpl7.Atom("Null");
 				org.jpl7.Query q3 = new org.jpl7.Query(rules.get(0).get(0));
-				Map<String, Term>[] sols = q3.allSolutions();
+				Map<String, org.jpl7.Term>[] sols = q3.allSolutions();
 				q3.close();
 
-				for (Map<String, Term> solution : sols) {
+				for (Map<String, org.jpl7.Term> solution : sols) {
 					Set<String> sol = solution.keySet();
 					for (String var : sol) {
 						if (solution.get(var).isCompound()) {
@@ -820,8 +824,8 @@ public class MainView extends VerticalLayout {
 					}
 				}
 
-				for (Map<String, Term> solution : sols) {
-					rows.add((HashMap<String, Term>) solution);
+				for (Map<String, org.jpl7.Term> solution : sols) {
+					rows.add((HashMap<String, org.jpl7.Term>) solution);
 
 				}
 				System.out.println("Yes: answers " + sols.length);
@@ -829,9 +833,9 @@ public class MainView extends VerticalLayout {
 				answers.setItems(rows);
 
 				if (rows.size() > 0) {
-					HashMap<String, Term> sr = rows.get(0);
+					HashMap<String, org.jpl7.Term> sr = rows.get(0);
 
-					for (Map.Entry<String, Term> entry : sr.entrySet()) {
+					for (Map.Entry<String, org.jpl7.Term> entry : sr.entrySet()) {
 						answers.addColumn(h -> h.get(entry.getKey())).setHeader(entry.getKey());
 					}
 				}

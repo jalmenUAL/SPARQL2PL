@@ -37,6 +37,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+         
     </repositories>
 
     <pluginRepositories>
@@ -63,12 +64,13 @@
     </dependencyManagement>
 
     <dependencies>
-    
-    <dependency>
+     
+ <dependency>
     <groupId>jpl</groupId>
     <artifactId>jpl</artifactId>
     <version>7.4.0</version>
 </dependency>
+    
 <dependency>
     <groupId>org.apache.jena</groupId>
     <artifactId>jena-arq</artifactId>
@@ -204,6 +206,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+   <artifactId>maven-install-plugin</artifactId>
+   
+   <configuration>
+      <groupId>jpl</groupId>
+      <artifactId>jpl</artifactId>
+      <version>7.4.0</version>
+      <packaging>jar</packaging>
+      <file>C:/Program Files/swipl/lib/jpl.jar</file>
+      <generatePom>false</generatePom>
+   </configuration>
+   
+</plugin>
         </plugins>
     </build>
 
